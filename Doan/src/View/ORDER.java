@@ -5,7 +5,7 @@
  */
 package View;
 
-import Control.MyMSSQLControl;
+import Control.MSSQLControl;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.util.logging.Level;
@@ -332,7 +332,7 @@ public class ORDER {
 
     public void themspvaobangsp() throws SQLException {
         themthuoctinhbangsp();
-        connection = MyMSSQLControl.getConnect();
+        connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
             String sql = "select * from SanPham";
             ResultSet resultSet = statement.executeQuery(sql);

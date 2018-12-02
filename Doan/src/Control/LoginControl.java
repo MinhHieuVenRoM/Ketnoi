@@ -12,37 +12,77 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import View.Login;
+import View.ManHinhChinh;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Minh Hieu
  */
-public class LoginControl {
+public class LoginControl extends Login {
 
     private static Connection connection;
 
+    public LoginControl() {
+
+        this.buttonDangnhap.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(getuser());
+                System.out.println(getpass());
+                UserModel userModel = new UserModel(getuser(), getpass());
+                try {
+                    if (LoginControl.requestLogin(userModel) == true) {
+                        try {
+                            jf.dispose();
+                            ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
+                        } catch (IOException ex) {
+                            Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Lỗi sai tài khoản hoặc mật khẩu");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        checkpass.addActionListener((ActionEvent e) -> {
+            if (checkpass.isSelected()) {
+                checkpass.setText("Ẩn Mật Khẩu");
+                password.setEchoChar((char) 0);
+            } else {
+                checkpass.setText("HiệnMật Khẩu");
+                password.setEchoChar('*');
+            }
+        });
+
+    }
+
     public static boolean requestLogin(UserModel user) throws SQLException {
-        connection = MyMSSQLControl.getConnect();
+        connection = MSSQLControl.getConnect();
         try {
             String sql = "select PASSWORD from DANGNHAP where IDUSER='" + user.getName() + "'";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString("PASSWORD"));
-                System.out.println(user.getPassword());
                 if (rs.getString("PASSWORD").equals(user.getPassword())) {
                     System.out.println("ok");
                     connection.close();
                     return true;
                 }
-               
+
             }
         } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.toString());   
+            System.out.println("SQLException: " + ex.toString());
             connection.close();
         }
         return false;
     }
 
-  
 }

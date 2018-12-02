@@ -5,6 +5,7 @@
  */
 package Main;
 
+import Control.LoginControl;
 import View.Login;
 import java.io.IOException;
 
@@ -14,7 +15,6 @@ import java.io.IOException;
  */
 public class BanHang {
       public static void main(String[] args) throws IOException {
-        Login login;
-        login = new Login();
+        new LoginControl();
     }
 }

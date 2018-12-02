@@ -70,7 +70,7 @@ public class Quanlynhanvien extends JFrame {
     public Quanlynhanvien() {
         f = new JFrame();
         f.setTitle("Quản lý Cửa hàng tiện lợi");
-
+        f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLayout(null);//Khong su dung Layout Manager  
         f.setSize(1015, 660);//Do rong la 1015 va chieu cao la 695
