@@ -15,6 +15,6 @@ import java.io.IOException;
  */
 public class BanHang {
       public static void main(String[] args) throws IOException {
-        new LoginControl();
+        new Login();
     }
 }

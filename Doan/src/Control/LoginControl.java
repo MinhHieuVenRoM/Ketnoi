@@ -13,32 +13,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import View.Login;
 import View.ManHinhChinh;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Minh Hieu
  */
-public class LoginControl extends Login {
+public class LoginControl {
 
     private static Connection connection;
-
-    public LoginControl() {
-
-        this.buttonDangnhap.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(getuser());
-                System.out.println(getpass());
-                UserModel userModel = new UserModel(getuser(), getpass());
+    public void ketnoi(ActionEvent e, UserModel userModel) throws IOException, ClassNotFoundException, SQLException{
+         Component component = (Component) e.getSource();
+        Login fr = (Login) SwingUtilities.getRoot(component);
                 try {
                     if (LoginControl.requestLogin(userModel) == true) {
                         try {
-                            jf.dispose();
+                            fr.dispose();
                             ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
                         } catch (IOException ex) {
                             Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,28 +46,54 @@ public class LoginControl extends Login {
                 } catch (SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-        });
-        checkpass.addActionListener((ActionEvent e) -> {
-            if (checkpass.isSelected()) {
-                checkpass.setText("Ẩn Mật Khẩu");
-                password.setEchoChar((char) 0);
-            } else {
-                checkpass.setText("HiệnMật Khẩu");
-                password.setEchoChar('*');
-            }
-        });
-
+    
     }
+
+//    public LoginControl() {
+//
+//        this.buttonDangnhap.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.out.println(getuser());
+//                System.out.println(getpass());
+//                UserModel userModel = new UserModel(getuser(), getpass());
+//                try {
+//                    if (LoginControl.requestLogin(userModel) == true) {
+//                        try {
+//                            jf.dispose();
+//                            ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
+//                        } catch (IOException ex) {
+//                            Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "Lỗi sai tài khoản hoặc mật khẩu");
+//                    }
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        checkpass.addActionListener((ActionEvent e) -> {
+//            if (checkpass.isSelected()) {
+//                checkpass.setText("Ẩn Mật Khẩu");
+//                password.setEchoChar((char) 0);
+//            } else {
+//                checkpass.setText("HiệnMật Khẩu");
+//                password.setEchoChar('*');
+//            }
+//        });
+//
+//    }
 
     public static boolean requestLogin(UserModel user) throws SQLException {
         connection = MSSQLControl.getConnect();
         try {
-            String sql = "select PASSWORD from DANGNHAP where IDUSER='" + user.getName() + "'";
+            String sql = "select MatKhau from NHANVIEN where MaNV='" + user.getName() + "'";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                if (rs.getString("PASSWORD").equals(user.getPassword())) {
+                if (rs.getString("MatKhau").equals(user.getPassword())) {
                     System.out.println("ok");
                     connection.close();
                     return true;

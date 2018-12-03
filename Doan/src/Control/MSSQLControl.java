@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class MSSQLControl {
 
-    public static final String DATABASE_NAME = "DOANJava";
+    public static final String DATABASE_NAME = "QLCuaHangTienLoi";
     public static final String SERVER_NAME = "DESKTOP-EBT5L5N";
 
     public static Connection getConnect() throws SQLException {

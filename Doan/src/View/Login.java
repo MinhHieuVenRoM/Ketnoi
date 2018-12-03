@@ -5,9 +5,15 @@
  */
 package View;
 
+import Control.LoginControl;
+import Model.UserModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -24,31 +30,31 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author Minh Hieu
  */
-public class Login {
+public class Login extends JFrame {
 
     private JPanel panel2;
     protected JButton buttonDangnhap;
     protected JCheckBox checkpass;
     protected JTextField userid;
     protected JPasswordField password;
-    protected JFrame jf;
+    private LoginControl controller;
 
-    public Login() {
+    public Login() throws IOException{
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Thu.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        jf = new JFrame("Đăng Nhập");
+        this.setTitle("Đăng Nhập");
 //        jf.setIconImage(new ImageIcon("D:\\java\\Thu\\1.png").getImage());
-        jf.setSize(300, 370);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setResizable(false);
-        jf.setLayout(null);
+        this.setSize(300, 370);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setLayout(null);
 //      jf.getContentPane().setBackground(Color.decode("#FAFAFA"));
 //      panel1 = new ImagePanel(new ImageIcon("C:\\Users\\User\\Desktop\\1.png").getImage());
-
+        controller = new LoginControl();
         panel2 = new JPanel();
         panel2.setLayout(new GridLayout(3, 2));
         JLabel name = new JLabel("User name:");
@@ -68,6 +74,12 @@ public class Login {
         panel2.add(check);
         panel2.add(checkpass);
         panel2.setBounds(45, 90, 200, 70);
+        checkpass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
         buttonDangnhap = new JButton("Đăng Nhập");
 
@@ -75,6 +87,21 @@ public class Login {
         buttonDangnhap.setFont(new Font("TimesRoman", Font.BOLD, 14));
         buttonDangnhap.setSize(110, 40);
         buttonDangnhap.setLocation(95, 200);
+        buttonDangnhap.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                     UserModel userModel = new UserModel(getuser(), getpass());
+                    controller.ketnoi(e,userModel);
+                } catch (IOException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         JLabel dangnhap = new JLabel("Đăng Nhập");
 
         dangnhap.setFont(new Font("TimesRoman", Font.BOLD, 18));
@@ -89,14 +116,14 @@ public class Login {
 //        hinh.setIcon(img);
 //
 //        jf.add(hinh);
-        jf.getRootPane().setDefaultButton(buttonDangnhap);
-        jf.add(buttonDangnhap);
-        jf.add(dangnhap);
+        this.getRootPane().setDefaultButton(buttonDangnhap);
+        this.add(buttonDangnhap);
+        this.add(dangnhap);
 //        panel1.add(panel2);
 
-        jf.add(panel2);
-        jf.setLocationRelativeTo(null);
-        jf.setVisible(true);
+        this.add(panel2);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     public JButton getLoginButton() {
