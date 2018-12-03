@@ -28,39 +28,52 @@ import javax.swing.SwingUtilities;
 public class LoginControl {
 
     private static Connection connection;
-
-    public void ketnoi(ActionEvent e, UserModel userModel) throws IOException, ClassNotFoundException, SQLException {
-        Component component = (Component) e.getSource();
+    public void ketnoi(ActionEvent e, UserModel userModel) throws IOException, ClassNotFoundException, SQLException{
+         Component component = (Component) e.getSource();
         Login fr = (Login) SwingUtilities.getRoot(component);
-        try {
-            if (LoginControl.requestLogin(userModel) == true) {
                 try {
-                    fr.dispose();
-                    ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
-                } catch (IOException ex) {
-                    Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
+                    if (LoginControl.requestLogin(userModel) == true) {
+                        try {
+                            fr.dispose();
+                            ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
+                        } catch (IOException ex) {
+                            Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Lỗi sai tài khoản hoặc mật khẩu");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Lỗi sai tài khoản hoặc mật khẩu");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+    
     }
-    public void AnHienPass(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
-        Component component = (Component) e.getSource();
-        Login fr = (Login) SwingUtilities.getRoot(component);
-       if (fr.getCheckBox().isSelected()) {
-                fr.getCheckBox().setText("Ẩn Mật Khẩu");
-                fr.getPassword().setEchoChar((char) 0);
-            } else {
-                fr.getCheckBox().setText("HiệnMật Khẩu");
-                 fr.getPassword().setEchoChar('*');
-            }
 
-    }
+//    public LoginControl() {
+//
+//        this.buttonDangnhap.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.out.println(getuser());
+//                System.out.println(getpass());
+//                UserModel userModel = new UserModel(getuser(), getpass());
+//                try {
+//                    if (LoginControl.requestLogin(userModel) == true) {
+//                        try {
+//                            jf.dispose();
+//                            ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
+//                        } catch (IOException ex) {
+//                            Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "Lỗi sai tài khoản hoặc mật khẩu");
+//                    }
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
 //        checkpass.addActionListener((ActionEvent e) -> {
 //            if (checkpass.isSelected()) {
 //                checkpass.setText("Ẩn Mật Khẩu");
@@ -69,8 +82,9 @@ public class LoginControl {
 //                checkpass.setText("HiệnMật Khẩu");
 //                password.setEchoChar('*');
 //            }
-
+//        });
 //
+//    }
 
     public static boolean requestLogin(UserModel user) throws SQLException {
         connection = MSSQLControl.getConnect();

@@ -65,11 +65,7 @@ public class ManHinhChinh {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
-                try {
-                    new Login();
-                } catch (IOException ex) {
-                    Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new Login();
             }
         });
         panel1.add(logout);
