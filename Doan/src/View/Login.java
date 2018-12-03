@@ -35,6 +35,14 @@ public class Login extends JFrame {
     private JPanel panel2;
     protected JButton buttonDangnhap;
     protected JCheckBox checkpass;
+
+    public JTextField getUserid() {
+        return userid;
+    }
+
+    public JPasswordField getPassword() {
+        return password;
+    }
     protected JTextField userid;
     protected JPasswordField password;
     private LoginControl controller;
@@ -77,7 +85,16 @@ public class Login extends JFrame {
         checkpass.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
+                try {
+                    controller.AnHienPass(e);
+                } catch (IOException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
