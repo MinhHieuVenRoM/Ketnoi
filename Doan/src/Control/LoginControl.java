@@ -61,17 +61,6 @@ public class LoginControl {
             }
 
     }
-//        checkpass.addActionListener((ActionEvent e) -> {
-//            if (checkpass.isSelected()) {
-//                checkpass.setText("Ẩn Mật Khẩu");
-//                password.setEchoChar((char) 0);
-//            } else {
-//                checkpass.setText("HiệnMật Khẩu");
-//                password.setEchoChar('*');
-//            }
-
-//
-
     public static boolean requestLogin(UserModel user) throws SQLException {
         connection = MSSQLControl.getConnect();
         try {
