@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -58,6 +59,7 @@ public class Login extends JFrame {
         panel2 = new JPanel();
         panel2.setLayout(new GridLayout(3, 2));
         JLabel name = new JLabel("User name:");
+        java.awt.Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, true);
         panel2.add(name);
         name.setFont(new Font("TimesRoman", Font.BOLD, 15));
         userid = new JTextField();

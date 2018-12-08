@@ -52,16 +52,15 @@ public class BanHang extends JFrame {
     private DefaultTableModel defaultTableModelSanPham, defaultTableModel2;
     private JPanel panel1, panel2;
     private JTable jt, tbban;
-    private JTextField NameT1, textkh;
+    private JTextField NameT1, textkh, textSl;
     private boolean trangthaithem;
     private Connection connection;
     private BanHangControl controller;
     private JButton quaylaiButton, timkiem;
     private JComboBox nhanvien, cbbLoai;
-    private String maloai="TẤT CẢ";
-    
+    private String maloai = "TẤT CẢ";
 
-    public BanHang(String tennhanvien) throws SQLException {
+    public BanHang(String tennhanvien, int capbac) throws SQLException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -80,7 +79,7 @@ public class BanHang extends JFrame {
 
         quaylaiButton.addActionListener((ActionEvent e) -> {
             try {
-                controller.QuayLai(e, tennhanvien);
+                controller.QuayLai(e, tennhanvien, capbac);
             } catch (IOException ex) {
                 Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException | SQLException ex) {
@@ -105,8 +104,8 @@ public class BanHang extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    
-                    maloai=controller.Timkiem(e);
+
+                    maloai = controller.Timkiem(e);
                     defaultTableModelSanPham = controller.themspvaobangsp(maloai);
                     jt.setModel(defaultTableModelSanPham);
                 } catch (IOException ex) {
@@ -148,12 +147,7 @@ public class BanHang extends JFrame {
 
         JLabel Nv = new JLabel("Nhân Viên");
         Nv.setBounds(14, 100, 76, 25);
-
-        nhanvien = new JComboBox();
-        nhanvien.addItem("Minh Hiếu");
-        nhanvien.addItem("Văn Thịnh");
-        nhanvien.addItem("Mỹ Ngọc");
-        nhanvien.addItem("Mỹ Duyên");
+        nhanvien = new JComboBox(controller.layDsnhanvien());
         nhanvien.setBounds(90, 100, 200, 25);
         JLabel ngay = new JLabel("Ngày");
         ngay.setBounds(14, 63, 28, 17);
@@ -184,6 +178,37 @@ public class BanHang extends JFrame {
         panel2.setBackground(Color.decode("#99CCCC"));
 
         panel2.add(jScrollPaneban);
+        tbban.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    controller.chinhsuSoluong(e);
+                } catch (IOException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+//
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
         panel2.add(mahang);
         panel2.add(textkh);
         panel2.add(ngay);
@@ -229,14 +254,14 @@ public class BanHang extends JFrame {
         panel2.add(Thanhtoan);
 
         JButton taohoadon = new JButton();
-        taohoadon.setBounds(407, 80, 70, 60);
+        taohoadon.setBounds(407, 450, 70, 60);
         taohoadon.setMargin(new Insets(5, 5, 5, 5));
         taohoadon.setText("<html><center>" + "Tạo Mới" + "<br>" + "Hóa Đơn" + "</center></html>");
         this.add(taohoadon);
 
         JLabel Soluong = new JLabel("Số lượng");
         Soluong.setBounds(420, 220, 60, 20);
-        JTextField textSl = new JTextField();
+        textSl = new JTextField();
         textSl.setText("");
 
         textSl.setBounds(407, 250, 70, 25);
@@ -244,38 +269,66 @@ public class BanHang extends JFrame {
         this.add(textSl);
 
         JButton them = new JButton();
-        them.setBounds(407, 290, 70, 32);
+        them.setBounds(407, 180, 70, 32);
         them.setText("Thêm >>");
         them.setMargin(new Insets(0, -5, 0, 0));
         them.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (textSl.getText() != "") {
-                    controller.themspvaobangspchon(Integer.parseInt(textSl.getText()));
+                    controller.themspvaobangspchon(textSl.getText());
                 }
             }
         });
         this.add(them);
-        JButton giam = new JButton();
-        giam.setBounds(407, 335, 70, 32);
-        giam.setText("<< Giảm");
-        giam.setMargin(new Insets(0, -5, 0, 0));
-        this.add(giam);
+        JButton suaButton = new JButton();
+        suaButton.setBounds(407, 300, 70, 32);
+        suaButton.setText("Sửa");
+        suaButton.setMargin(new Insets(0, -5, 0, 0));
+        suaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.suaSoluong(e);
+                    tbban.setModel(defaultTableModel2);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+
+                }
+            }
+        }
+        );
+
+        this.add(suaButton);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Menu");
         JMenu editMenu = new JMenu("Nhân viên");
         JMenu aboutMenu = new JMenu("Liên hệ");
+
         menuBar.add(fileMenu);
+
         menuBar.add(editMenu);
+
         menuBar.add(aboutMenu);
         jt = new JTable(defaultTableModelSanPham);
-        jt.getModel().addTableModelListener(jt);
+
+        jt.getModel()
+                .addTableModelListener(jt);
         JScrollPane jScrollPane = new JScrollPane(jt);
-        jScrollPane.setBounds(15, 110, 390, 470);
-        jt.addMouseListener(new MouseListener() {
+
+        jScrollPane.setBounds(
+                15, 110, 390, 470);
+        jt.addMouseListener(
+                new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e
+            ) {
                 try {
                     controller.LaySanPhamTuTable(e);
                 } catch (IOException ex) {
@@ -288,26 +341,36 @@ public class BanHang extends JFrame {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e
+            ) {
             }
 //
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(MouseEvent e
+            ) {
             }
 
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(MouseEvent e
+            ) {
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(MouseEvent e
+            ) {
             }
         });
+
         this.add(jScrollPane);
+
         this.setJMenuBar(menuBar);
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+
+        this.setLocationRelativeTo(
+                null);
+
+        this.setVisible(
+                true);
     }
 
     public JComboBox getNhanvien() {
@@ -368,5 +431,9 @@ public class BanHang extends JFrame {
 
     public JButton getTimkiem() {
         return timkiem;
+    }
+
+    public JTextField getTextSl() {
+        return textSl;
     }
 }

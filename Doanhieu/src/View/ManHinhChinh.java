@@ -32,7 +32,7 @@ public class ManHinhChinh {
 
     private JPanel panel1, panel2;
 
-    public ManHinhChinh(String tennhanvien) throws IOException {
+    public ManHinhChinh(String tennhanvien, int capbac) throws IOException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -88,7 +88,7 @@ public class ManHinhChinh {
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
                 try {
-                    new BanHang(tennv.getText());
+                    new BanHang(tennv.getText(),capbac);
                 } catch (SQLException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -109,8 +109,8 @@ public class ManHinhChinh {
                 new Quanlytinthongcanhan();
             }
         });
-        panel2.add(Nhanvien);
 
+        panel2.add(Nhanvien);
         JButton quanlythuchi = new JButton("Quản Lý Thu Chi");
         quanlythuchi.setIcon(icon5.icon);
         quanlythuchi.setVerticalTextPosition(AbstractButton.BOTTOM);
@@ -128,7 +128,9 @@ public class ManHinhChinh {
                 }
             }
         });
-        panel2.add(quanlythuchi);
+        if (capbac == 1) {
+            panel2.add(quanlythuchi);
+        }
 
         JButton quanlykho = new JButton("Quản Lý Kho");
         quanlykho.setIcon(icon6.icon);
@@ -158,7 +160,9 @@ public class ManHinhChinh {
                 new Quanlynhanvien();
             }
         });
-        panel2.add(admin);
+        if (capbac == 1) {
+            panel2.add(admin);
+        }
 
         JButton thoat = new JButton("Thoát");
         thoat.setIcon(icon8.icon);

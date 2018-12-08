@@ -120,7 +120,7 @@ public class CHINH_DOANHTHU {
             public void actionPerformed(ActionEvent e) {
              try {
                  jf.dispose();
-                 new ManHinhChinh("");
+                 new ManHinhChinh("",1);
              } catch (IOException ex) {
                  Logger.getLogger(CHINH_DOANHTHU.class.getName()).log(Level.SEVERE, null, ex);
              }

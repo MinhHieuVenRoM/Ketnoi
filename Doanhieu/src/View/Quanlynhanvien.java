@@ -237,7 +237,7 @@ public class Quanlynhanvien extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     f.dispose();
-                    new ManHinhChinh("");
+                    new ManHinhChinh("",1);
                 } catch (IOException ex) {
                     Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
                 }

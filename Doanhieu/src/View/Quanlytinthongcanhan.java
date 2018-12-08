@@ -281,7 +281,7 @@ public class Quanlytinthongcanhan {
             public void actionPerformed(ActionEvent e) {
                 try {
                     jf.dispose();
-                    new ManHinhChinh("");
+                    new ManHinhChinh("",1);
                 } catch (IOException ex) {
                     Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -468,7 +468,7 @@ public class GiaoDienKho extends JScrollPane{
             public void actionPerformed(ActionEvent e) {
                 try {
                     f.dispose();
-                    new ManHinhChinh("");
+                    new ManHinhChinh("HH",1);
                 } catch (IOException ex) {
                     Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
                 }

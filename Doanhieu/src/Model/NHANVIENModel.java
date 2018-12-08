@@ -18,6 +18,7 @@ import java.util.Date;
  * @author Minh Hieu
  */
 public class NHANVIENModel {
+
     private static Connection connection;
     private String MaNV;
     private String TenNV;
@@ -29,6 +30,7 @@ public class NHANVIENModel {
     private String SDT;
     private String MatKhau;
     private ArrayList<NHANVIENModel> DSNV;
+
     public void setMaNV(String MaNV) {
         this.MaNV = MaNV;
     }
@@ -101,15 +103,15 @@ public class NHANVIENModel {
         return MatKhau;
     }
 
-    public NHANVIENModel(String ma,String pass) {
-        this.MaNV=ma;
-        this.MatKhau=pass;
+    public NHANVIENModel(String ma, String pass) {
+        this.MaNV = ma;
+        this.MatKhau = pass;
     }
 
     public NHANVIENModel() {
     }
-    
-     public ArrayList layThongtinnhanvien() throws SQLException {
+
+    public ArrayList layThongtinnhanvien() throws SQLException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
         String sql = "select * from NHANVIEN";
@@ -130,5 +132,13 @@ public class NHANVIENModel {
         }
         connection.close();
         return DSNV;
+    }
+
+    public int demSonhanvien() {
+        int i = 0;
+        for (NHANVIENModel nv : DSNV) {
+            i++;
+        }
+        return i;
     }
 }

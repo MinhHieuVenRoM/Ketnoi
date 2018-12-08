@@ -36,19 +36,21 @@ public class BanHangControl {
 
     private static Connection connection;
     private DefaultTableModel defaultTableModelSanPham, defaultTableModel2;
-    private String ma = "", ten = "", donvi = "", gia = "";
+    private String ma = "", ten = "", donvi = "", gia = "", soluong = "", tong = "";
     private ArrayList<SANPHAMModel> DSSP;
     private ArrayList<LOAISANPHAMModel> Dsloai;
+    private ArrayList<NHANVIENModel> DSnhanvien;
+    private int vitrihangtableban;
 
     public BanHangControl() {
     }
 
-    public void QuayLai(ActionEvent e, String NhanVien) throws IOException, ClassNotFoundException, SQLException {
+    public void QuayLai(ActionEvent e, String NhanVien, int capbac) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
         try {
             fr.dispose();
-            ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
+            ManHinhChinh manHinhChinh = new ManHinhChinh(NhanVien, capbac);
         } catch (IOException ex) {
             Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,9 +61,10 @@ public class BanHangControl {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
         String maloai = "TẤT CẢ";
-        for(LOAISANPHAMModel loai:Dsloai){
-        if(fr.getCbbLoai().getSelectedItem().toString().equals(loai.getTENLOAI()))
-            maloai=loai.getMALOAI();
+        for (LOAISANPHAMModel loai : Dsloai) {
+            if (fr.getCbbLoai().getSelectedItem().toString().equals(loai.getTENLOAI())) {
+                maloai = loai.getMALOAI();
+            }
         }
         themspvaobangsp(maloai);
         return maloai;
@@ -77,6 +80,23 @@ public class BanHangControl {
         for (LOAISANPHAMModel tam : Dsloai) {
 
             ds[i] = tam.getTENLOAI();
+            i++;
+        }
+
+        return ds;
+
+    }
+
+    public String[] layDsnhanvien() throws SQLException {
+        DSnhanvien = new ArrayList<>();
+        NHANVIENModel nv = new NHANVIENModel();
+        DSnhanvien = nv.layThongtinnhanvien();
+        String[] ds = new String[nv.demSonhanvien()];
+
+        int i = 0;
+        for (NHANVIENModel tam : DSnhanvien) {
+
+            ds[i] = tam.getTenNV();
             i++;
         }
 
@@ -107,6 +127,60 @@ public class BanHangControl {
             fr.getNameT1().setText(ma);
 
         }
+    }
+
+    public void chinhsuSoluong(MouseEvent e) throws IOException, ClassNotFoundException, SQLException {
+        Component component = (Component) e.getSource();
+        BanHang fr = (BanHang) SwingUtilities.getRoot(component);
+        int row = fr.getTbban().rowAtPoint(e.getPoint());
+        vitrihangtableban = row;
+        int col = fr.getTbban().columnAtPoint(e.getPoint());
+        int numcols = defaultTableModel2.getColumnCount();
+        String str = (String) defaultTableModel2.getValueAt(row, 4);
+        fr.getTextSl().setText(str);
+        for (int i = 0; i < numcols; i++) {
+            String tam = (String) defaultTableModel2.getValueAt(row, i);
+            if (i == 0) {
+                ma = tam;
+            }
+            if (i == 1) {
+                ten = tam;
+            }
+            if (i == 2) {
+                gia = tam;
+            }
+            if (i == 3) {
+                donvi = tam;
+            }
+            if (i == 4) {
+                soluong = tam;
+            }
+            if (i == 5) {
+                tong = tam;
+            }
+
+        }
+
+    }
+
+    public void suaSoluong(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
+        Component component = (Component) e.getSource();
+        BanHang fr = (BanHang) SwingUtilities.getRoot(component);
+        int array[];
+        array = fr.getTbban().getSelectedRows();
+        for (int i = 0; i < array.length; i++) {
+            defaultTableModel2.removeRow(array[i]);
+        }
+        Vector z = new Vector();
+        z.add(ma);
+        z.add(ten);
+        z.add(gia);
+        z.add(donvi);
+        z.add(fr.getTextSl().getText());
+        int tongdongia=Integer.parseInt(gia) * Integer.parseInt(fr.getTextSl().getText());
+        z.add(String.valueOf(tongdongia));
+        defaultTableModel2.insertRow(vitrihangtableban, z);
+
     }
 
     public void themthuoctinhbangsp() {
@@ -144,7 +218,7 @@ public class BanHangControl {
                 v.add(sp.getDONVI());
                 v.add(sp.getMALOAI());
                 v.add(String.valueOf(sp.getSOLUONGTON()));
-                
+
                 if (sp.getMALOAI().equals(tenloai)) {
                     defaultTableModelSanPham.addRow(v);
                 }
@@ -166,7 +240,7 @@ public class BanHangControl {
         return defaultTableModel2;
     }
 
-    public void themspvaobangspchon(int sl) {
+    public void themspvaobangspchon(String sl) {
 
         Vector v = new Vector();
         v.add(ma);
@@ -174,8 +248,8 @@ public class BanHangControl {
         v.add(gia);
         v.add(donvi);
         v.add(sl);
-        int tam = Integer.parseInt(gia) * sl;
-        v.add(tam);
+        int tam = Integer.parseInt(gia) * Integer.parseInt(sl);
+        v.add(String.valueOf(tam));
         defaultTableModel2.addRow(v);
 
     }

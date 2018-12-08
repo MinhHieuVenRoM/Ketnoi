@@ -38,7 +38,7 @@ public class LoginControl {
             if (requestLogin(userModel) == true) {
                 try {
                     fr.dispose();
-                    ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
+                    ManHinhChinh manHinhChinh = new ManHinhChinh(userModel.getMaNV(),kiemtraquyenLogin(userModel));
                 } catch (IOException ex) {
                     Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -79,6 +79,17 @@ public class LoginControl {
             connection.close();
         }
         return false;
+    }
+    public int kiemtraquyenLogin(NHANVIENModel user) throws SQLException{
+     NHANVIENModel nv = new NHANVIENModel();
+            ArrayList<NHANVIENModel> dsnv=new ArrayList<>();
+            dsnv=nv.layThongtinnhanvien();
+            for(NHANVIENModel tam: dsnv){
+                if((tam.getMaNV().equals(user.getMaNV()))&&tam.getMaChucVu().equals("CV001") )
+                    return 1;
+            }
+    
+    return 2;
     }
 
 }
