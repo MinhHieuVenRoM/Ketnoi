@@ -35,14 +35,6 @@ public class Login extends JFrame {
     private JPanel panel2;
     protected JButton buttonDangnhap;
     protected JCheckBox checkpass;
-
-    public JTextField getUserid() {
-        return userid;
-    }
-
-    public JPasswordField getPassword() {
-        return password;
-    }
     protected JTextField userid;
     protected JPasswordField password;
     private LoginControl controller;
@@ -155,6 +147,13 @@ public class Login extends JFrame {
     public String getpass() {
 
         return this.password.getText();
+    }
+        public JTextField getUserid() {
+        return userid;
+    }
+
+    public JPasswordField getPassword() {
+        return password;
     }
 
 }

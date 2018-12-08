@@ -16,6 +16,7 @@ import View.ManHinhChinh;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -34,7 +35,7 @@ public class LoginControl {
         Component component = (Component) e.getSource();
         Login fr = (Login) SwingUtilities.getRoot(component);
         try {
-            if (LoginControl.requestLogin(userModel) == true) {
+            if (requestLogin(userModel) == true) {
                 try {
                     fr.dispose();
                     ManHinhChinh manHinhChinh = new ManHinhChinh("HH");
@@ -65,16 +66,13 @@ public class LoginControl {
     public static boolean requestLogin(NHANVIENModel user) throws SQLException {
         connection = MSSQLControl.getConnect();
         try {
-            String sql = "select MatKhau from NHANVIEN where MaNV='" + user.getMaNV()+ "'";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("MatKhau").equals(user.getMatKhau())) {
-                    System.out.println("ok");
-                    connection.close();
+            NHANVIENModel nv = new NHANVIENModel();
+            ArrayList<NHANVIENModel> dsnv=new ArrayList<>();
+            dsnv=nv.layThongtinnhanvien();
+            for(NHANVIENModel tam: dsnv){
+                if((tam.getMaNV().equals(user.getMaNV()))&&tam.getMatKhau().equals(user.getMatKhau()) )
                     return true;
-                }
-
+           
             }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.toString());
