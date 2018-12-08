@@ -66,7 +66,7 @@ public class ManHinhChinh {
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
                 try {
-                    new  Login();
+                    new Login();
                 } catch (IOException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -88,7 +88,7 @@ public class ManHinhChinh {
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
                 try {
-                    new ORDER(tennv.getText());
+                    new BanHang(tennv.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }

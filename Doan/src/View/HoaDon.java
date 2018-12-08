@@ -30,7 +30,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Minh Hieu
  */
 public class HoaDon {
-       private JButton jbQuayLai;
+
+    private JButton jbQuayLai;
     private JLabel jlQLDT;
 
     HoaDon(String tennhanvien) {
@@ -139,12 +140,11 @@ public class HoaDon {
         QLHD_Nhap.add(jbTimKiem);
 
         QLHD.add(QLHD_Nhap);
-        
+
         //-------------------------------------------------
         //Tạo bảng
-                
         JTable jtable = new JTable();
-        
+
         DefaultTableModel defaultTableModel = new DefaultTableModel();
         defaultTableModel.addColumn("Số hóa đơn");
         defaultTableModel.addColumn("Thời gian");
@@ -152,10 +152,10 @@ public class HoaDon {
         defaultTableModel.addColumn("Tổng tiền");
         jtable.setModel(defaultTableModel);
         JScrollPane jScrollPane = new JScrollPane(jtable);
-        
+
         jScrollPane.setBounds(175, 244, 610, 169);
         QLHD.add(jScrollPane);
-        
+
         jf.add(QLHD);
         jf.setVisible(true);
         jf.setLocationRelativeTo(null);

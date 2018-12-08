@@ -29,6 +29,7 @@ public class LoginControl {
 
     private static Connection connection;
 
+
     public void ketnoi(ActionEvent e, UserModel userModel) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         Login fr = (Login) SwingUtilities.getRoot(component);
@@ -61,17 +62,6 @@ public class LoginControl {
             }
 
     }
-//        checkpass.addActionListener((ActionEvent e) -> {
-//            if (checkpass.isSelected()) {
-//                checkpass.setText("Ẩn Mật Khẩu");
-//                password.setEchoChar((char) 0);
-//            } else {
-//                checkpass.setText("HiệnMật Khẩu");
-//                password.setEchoChar('*');
-//            }
-
-//
-
     public static boolean requestLogin(UserModel user) throws SQLException {
         connection = MSSQLControl.getConnect();
         try {

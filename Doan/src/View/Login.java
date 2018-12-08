@@ -108,13 +108,9 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                     UserModel userModel = new UserModel(getuser(), getpass());
+                    UserModel userModel = new UserModel(getuser(), getpass());
                     controller.ketnoi(e,userModel);
-                } catch (IOException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
+                } catch (IOException | ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
