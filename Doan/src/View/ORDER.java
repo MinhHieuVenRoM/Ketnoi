@@ -51,7 +51,7 @@ public class ORDER {
     private JTable jt, tbban;
     private JTextField NameT1, textkh;
     private boolean trangthaithem;
-    private Connection connection;
+        private Connection connection;
 
     private String ma = "", ten = "", donvi = "", gia = "";
 
@@ -90,15 +90,15 @@ public class ORDER {
         name.setBounds(5, 10, 50, 25);
         NameT1 = new JTextField();
         NameT1.setBounds(60, 10, 100, 25);
-        String[] dsmhStrings = {"Tất cả", "Nước", "Bánh", "Đồ ăn nhanh"};
+        String[] dsmhStrings = {"Tất cả","Nước", "Bánh", "Đồ ăn nhanh"};
         JComboBox cbb = new JComboBox(dsmhStrings);
         cbb.setBounds(190, 10, 125, 25);
         cbb.setSelectedIndex(0);
         JButton timkiem = new JButton("Tìm");
         timkiem.setBounds(330, 10, 55, 25);
-
-        panel1.add(name);
-        panel1.add(NameT1);
+       
+        panel1.add(name);       
+        panel1.add(NameT1);   
         panel1.add(cbb);
         panel1.add(timkiem);
         panel1.setBounds(15, 70, 390, 38);
@@ -315,9 +315,9 @@ public class ORDER {
         defaultTableModelSanPham = new DefaultTableModel();
         defaultTableModelSanPham.addColumn("Mã Hàng");
         defaultTableModelSanPham.addColumn("Tên Hàng");
+        defaultTableModelSanPham.addColumn("Loại");
         defaultTableModelSanPham.addColumn("Giá");
         defaultTableModelSanPham.addColumn("Đơn vị");
-        defaultTableModelSanPham.addColumn("Loại");
     }
 
     public void themthuoctinhbangspduocchon() {
@@ -334,22 +334,23 @@ public class ORDER {
         themthuoctinhbangsp();
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
-        String sql = "select * from SanPham";
-        ResultSet resultSet = statement.executeQuery(sql);
-        defaultTableModelSanPham.setRowCount(0);
-        while (resultSet.next()) {
-            Vector v = new Vector();
-            v.add(resultSet.getString("MASP"));
-            v.add(resultSet.getString("TENSP"));
-            v.add(resultSet.getString("DONGIABAN"));
-            v.add(resultSet.getString("DONVI"));
-            v.add(resultSet.getString("MALOAI"));
-            v.add(resultSet.getString("SoLuongTon"));
-            defaultTableModelSanPham.addRow(v);
+            String sql = "select * from SanPham";
+            ResultSet resultSet = statement.executeQuery(sql);
+            defaultTableModelSanPham.setRowCount(0);
+            while(resultSet.next()){
+                Vector v = new Vector();
+                v.add(resultSet.getString("ID"));
+                v.add(resultSet.getString("Tensp"));
+                v.add(resultSet.getString("MALOAI"));
+                v.add(resultSet.getString("Gia"));
+                v.add(resultSet.getString("DONVI"));
+                defaultTableModelSanPham.addRow(v);
+            }
+            System.out.println("Load Staff Database success!");
+            connection.close();
         }
-        System.out.println("Load Product Database success!");
-        connection.close();
-    }
+
+    
 
     public void themspvaobangspchon(String ma, String ten, String donvi, int gia, int sl) {
         themthuoctinhbangsp();
