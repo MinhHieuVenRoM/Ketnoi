@@ -5,6 +5,8 @@
  */
 package View;
 
+import Control.BanHangControl;
+import Control.LoginControl;
 import Control.MSSQLControl;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
@@ -12,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,7 +47,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh Hieu
  */
-public class ORDER {
+public class BanHang extends JFrame {
 
     private DefaultTableModel defaultTableModelSanPham, defaultTableModel2;
     private JPanel panel1, panel2;
@@ -52,37 +55,39 @@ public class ORDER {
     private JTextField NameT1, textkh;
     private boolean trangthaithem;
     private Connection connection;
+    private BanHangControl controller;
+    private JButton quaylaiButton, timkiem;
+    private JComboBox nhanvien, cbbLoai;
+    private String maloai="TẤT CẢ";
+    
 
-    private String ma = "", ten = "", donvi = "", gia = "";
-
-    public ORDER(String tennhanvien) throws SQLException {
+    public BanHang(String tennhanvien) throws SQLException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Thu.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        JFrame jf = new JFrame("Đăng Nhập");
-        jf.setIconImage(new ImageIcon("D:\\java\\Thu\\1.png").getImage());
-        jf.setSize(1000, 660);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setResizable(false);
-        jf.setLayout(null);
-
-        JButton quaylaiButton = new JButton("Quay lại");
+        this.setTitle("Đăng Nhập");
+        this.setIconImage(new ImageIcon("D:\\java\\Thu\\1.png").getImage());
+        this.setSize(1000, 660);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setLayout(null);
+        controller = new BanHangControl();
+        quaylaiButton = new JButton("Quay lại");
         quaylaiButton.setBounds(10, 20, 80, 30);
-        quaylaiButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    jf.dispose();
-                    new ManHinhChinh(tennhanvien);
-                } catch (IOException ex) {
-                    Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+        quaylaiButton.addActionListener((ActionEvent e) -> {
+            try {
+                controller.QuayLai(e, tennhanvien);
+            } catch (IOException ex) {
+                Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        jf.add(quaylaiButton);
+        this.add(quaylaiButton);
         //panel
         panel1 = new JPanel();
         panel1.setLayout(null);
@@ -90,26 +95,43 @@ public class ORDER {
         name.setBounds(5, 10, 50, 25);
         NameT1 = new JTextField();
         NameT1.setBounds(60, 10, 100, 25);
-        String[] dsmhStrings = {"Tất cả", "Nước", "Bánh", "Đồ ăn nhanh"};
-        JComboBox cbb = new JComboBox(dsmhStrings);
-        cbb.setBounds(190, 10, 125, 25);
-        cbb.setSelectedIndex(0);
-        JButton timkiem = new JButton("Tìm");
+        cbbLoai = new JComboBox(controller.Layloaisanpham());
+        cbbLoai.setBounds(190, 10, 125, 25);
+        cbbLoai.setSelectedIndex(0);
+        timkiem = new JButton("Tìm");
         timkiem.setBounds(330, 10, 55, 25);
-
+        defaultTableModelSanPham = controller.themspvaobangsp(maloai);
+        timkiem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    
+                    maloai=controller.Timkiem(e);
+                    defaultTableModelSanPham = controller.themspvaobangsp(maloai);
+                    jt.setModel(defaultTableModelSanPham);
+                } catch (IOException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        );
         panel1.add(name);
         panel1.add(NameT1);
-        panel1.add(cbb);
+        panel1.add(cbbLoai);
         panel1.add(timkiem);
         panel1.setBounds(15, 70, 390, 38);
         panel1.setBackground(Color.decode("#99CCCC"));
-        jf.add(panel1);
+        this.add(panel1);
 
         JLabel hoadon = new JLabel("Hóa Đơn");
         hoadon.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 35));
         hoadon.setBounds(370, 0, 150, 70);
         hoadon.setForeground(Color.decode("#009999"));
-        jf.add(hoadon);
+        this.add(hoadon);
         //panel2
         panel2 = new JPanel();
         panel2.setLayout(null);
@@ -127,7 +149,7 @@ public class ORDER {
         JLabel Nv = new JLabel("Nhân Viên");
         Nv.setBounds(14, 100, 76, 25);
 
-        JComboBox nhanvien = new JComboBox();
+        nhanvien = new JComboBox();
         nhanvien.addItem("Minh Hiếu");
         nhanvien.addItem("Văn Thịnh");
         nhanvien.addItem("Mỹ Ngọc");
@@ -154,7 +176,7 @@ public class ORDER {
         panel2.add(nhanvien);
         //bang hang hoa
         tbban = new JTable();
-        themthuoctinhbangspduocchon();
+        defaultTableModel2 = controller.themthuoctinhbangspduocchon();
         tbban.setModel(defaultTableModel2);
         JScrollPane jScrollPaneban = new JScrollPane(tbban);
         jScrollPaneban.setBounds(0, 130, 500, 250);
@@ -199,7 +221,7 @@ public class ORDER {
         cbbloaigiamgia.addItem("%");
         cbbloaigiamgia.setBounds(450, 393, 40, 25);
         panel2.add(cbbloaigiamgia);
-        jf.add(panel2);
+        this.add(panel2);
 
         JButton Thanhtoan = new JButton();
         Thanhtoan.setBounds(342, 433, 138, 60);
@@ -210,7 +232,7 @@ public class ORDER {
         taohoadon.setBounds(407, 80, 70, 60);
         taohoadon.setMargin(new Insets(5, 5, 5, 5));
         taohoadon.setText("<html><center>" + "Tạo Mới" + "<br>" + "Hóa Đơn" + "</center></html>");
-        jf.add(taohoadon);
+        this.add(taohoadon);
 
         JLabel Soluong = new JLabel("Số lượng");
         Soluong.setBounds(420, 220, 60, 20);
@@ -218,8 +240,8 @@ public class ORDER {
         textSl.setText("");
 
         textSl.setBounds(407, 250, 70, 25);
-        jf.add(Soluong);
-        jf.add(textSl);
+        this.add(Soluong);
+        this.add(textSl);
 
         JButton them = new JButton();
         them.setBounds(407, 290, 70, 32);
@@ -229,16 +251,16 @@ public class ORDER {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (textSl.getText() != "") {
-                    themspvaobangspchon(ma, ten, donvi, Integer.parseInt(gia), Integer.parseInt(textSl.getText()));
+                    controller.themspvaobangspchon(Integer.parseInt(textSl.getText()));
                 }
             }
         });
-        jf.add(them);
+        this.add(them);
         JButton giam = new JButton();
         giam.setBounds(407, 335, 70, 32);
         giam.setText("<< Giảm");
         giam.setMargin(new Insets(0, -5, 0, 0));
-        jf.add(giam);
+        this.add(giam);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Menu");
@@ -247,53 +269,28 @@ public class ORDER {
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
         menuBar.add(aboutMenu);
-        themspvaobangsp();
         jt = new JTable(defaultTableModelSanPham);
         jt.getModel().addTableModelListener(jt);
         JScrollPane jScrollPane = new JScrollPane(jt);
-
         jScrollPane.setBounds(15, 110, 390, 470);
-        jf.add(jScrollPane);
-        themvaoban();
-        jf.setJMenuBar(menuBar);
-        jf.setLocationRelativeTo(null);
-        jf.setVisible(true);
-    }
-
-    public void themvaoban() {
-
         jt.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //JOptionPane.showInputDialog("thong bao");
-                int row = jt.rowAtPoint(e.getPoint());
-                int col = jt.columnAtPoint(e.getPoint());
-                int numcols = defaultTableModelSanPham.getColumnCount();
-                for (int i = 0; i < numcols; i++) {
-                    String str = (String) defaultTableModelSanPham.getValueAt(row, i);
-                    if (i == 0) {
-                        ma = str;
-                    }
-                    if (i == 1) {
-                        ten = str;
-                    }
-                    if (i == 2) {
-                        donvi = str;
-                    }
-                    if (i == 3) {
-                        gia = str;
-                    }
-                    NameT1.setText(ma);
-                    //a+=str;
+                try {
+                    controller.LaySanPhamTuTable(e);
+                } catch (IOException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //JOptionPane.showInputDialog(a);
-
-                //       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
             }
+//
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -306,63 +303,70 @@ public class ORDER {
             @Override
             public void mouseExited(MouseEvent e) {
             }
-
         });
-
+        this.add(jScrollPane);
+        this.setJMenuBar(menuBar);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
-    public void themthuoctinhbangsp() {
-        defaultTableModelSanPham = new DefaultTableModel();
-        defaultTableModelSanPham.addColumn("Mã Hàng");
-        defaultTableModelSanPham.addColumn("Tên Hàng");
-        defaultTableModelSanPham.addColumn("Giá");
-        defaultTableModelSanPham.addColumn("Đơn vị");
-        defaultTableModelSanPham.addColumn("Loại");
+    public JComboBox getNhanvien() {
+        return nhanvien;
     }
 
-    public void themthuoctinhbangspduocchon() {
-        defaultTableModel2 = new DefaultTableModel();
-        defaultTableModel2.addColumn("Mã Hàng");
-        defaultTableModel2.addColumn("Tên Hàng");
-        defaultTableModel2.addColumn("Đơn vị");
-        defaultTableModel2.addColumn("Giá");
-        defaultTableModel2.addColumn("Số lượng");
-        defaultTableModel2.addColumn("Tổng");
+    public JComboBox getCbbLoai() {
+        return cbbLoai;
     }
 
-    public void themspvaobangsp() throws SQLException {
-        themthuoctinhbangsp();
-        connection = MSSQLControl.getConnect();
-        Statement statement = connection.createStatement();
-        String sql = "select * from SanPham";
-        ResultSet resultSet = statement.executeQuery(sql);
-        defaultTableModelSanPham.setRowCount(0);
-        while (resultSet.next()) {
-            Vector v = new Vector();
-            v.add(resultSet.getString("MASP"));
-            v.add(resultSet.getString("TENSP"));
-            v.add(resultSet.getString("DONGIABAN"));
-            v.add(resultSet.getString("DONVI"));
-            v.add(resultSet.getString("MALOAI"));
-            v.add(resultSet.getString("SoLuongTon"));
-            defaultTableModelSanPham.addRow(v);
-        }
-        System.out.println("Load Product Database success!");
-        connection.close();
+    public JTable getJt() {
+        return jt;
     }
 
-    public void themspvaobangspchon(String ma, String ten, String donvi, int gia, int sl) {
-        themthuoctinhbangsp();
-        Vector v = new Vector();
-        v.add(ma);
-        v.add(ten);
-        v.add(donvi);
-        v.add(gia);
-        v.add(sl);
-        double tam = gia * sl;
-        v.add(tam);
-        defaultTableModel2.addRow(v);
-
+    public JTable getTbban() {
+        return tbban;
     }
 
+    public DefaultTableModel getDefaultTableModelSanPham() {
+        return defaultTableModelSanPham;
+    }
+
+    public DefaultTableModel getDefaultTableModel2() {
+        return defaultTableModel2;
+    }
+
+    public JPanel getPanel1() {
+        return panel1;
+    }
+
+    public JPanel getPanel2() {
+        return panel2;
+    }
+
+    public JTextField getNameT1() {
+        return NameT1;
+    }
+
+    public JTextField getTextkh() {
+        return textkh;
+    }
+
+    public boolean isTrangthaithem() {
+        return trangthaithem;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public BanHangControl getController() {
+        return controller;
+    }
+
+    public JButton getQuaylaiButton() {
+        return quaylaiButton;
+    }
+
+    public JButton getTimkiem() {
+        return timkiem;
+    }
 }
