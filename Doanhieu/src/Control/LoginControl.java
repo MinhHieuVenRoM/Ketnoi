@@ -30,7 +30,6 @@ public class LoginControl {
 
     private static Connection connection;
 
-
     public void ketnoi(ActionEvent e, NHANVIENModel userModel) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         Login fr = (Login) SwingUtilities.getRoot(component);
@@ -38,7 +37,7 @@ public class LoginControl {
             if (requestLogin(userModel) == true) {
                 try {
                     fr.dispose();
-                    ManHinhChinh manHinhChinh = new ManHinhChinh(userModel.getMaNV(),kiemtraquyenLogin(userModel));
+                    ManHinhChinh manHinhChinh = new ManHinhChinh(userModel.getMaNV(), kiemtraquyenLogin(userModel));
                 } catch (IOException ex) {
                     Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -51,28 +50,30 @@ public class LoginControl {
         }
 
     }
+
     public void AnHienPass(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         Login fr = (Login) SwingUtilities.getRoot(component);
-       if (fr.getCheckBox().isSelected()) {
-                fr.getCheckBox().setText("Ẩn Mật Khẩu");
-                fr.getPassword().setEchoChar((char) 0);
-            } else {
-                fr.getCheckBox().setText("HiệnMật Khẩu");
-                 fr.getPassword().setEchoChar('*');
-            }
+        if (fr.getCheckBox().isSelected()) {
+            fr.getCheckBox().setText("Ẩn Mật Khẩu");
+            fr.getPassword().setEchoChar((char) 0);
+        } else {
+            fr.getCheckBox().setText("HiệnMật Khẩu");
+            fr.getPassword().setEchoChar('*');
+        }
 
     }
+
     public static boolean requestLogin(NHANVIENModel user) throws SQLException {
         connection = MSSQLControl.getConnect();
         try {
             NHANVIENModel nv = new NHANVIENModel();
-            ArrayList<NHANVIENModel> dsnv=new ArrayList<>();
-            dsnv=nv.layThongtinnhanvien();
-            for(NHANVIENModel tam: dsnv){
-                if((tam.getMaNV().equals(user.getMaNV()))&&tam.getMatKhau().equals(user.getMatKhau()) )
+            ArrayList<NHANVIENModel> dsnv = new ArrayList<>();
+            dsnv = nv.layThongtinnhanvien();
+            for (NHANVIENModel tam : dsnv) {
+                if ((tam.getMaNV().equals(user.getMaNV())) && tam.getMatKhau().equals(user.getMatKhau())) {
                     return true;
-           
+                }
             }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.toString());
@@ -80,16 +81,24 @@ public class LoginControl {
         }
         return false;
     }
-    public int kiemtraquyenLogin(NHANVIENModel user) throws SQLException{
-     NHANVIENModel nv = new NHANVIENModel();
-            ArrayList<NHANVIENModel> dsnv=new ArrayList<>();
-            dsnv=nv.layThongtinnhanvien();
-            for(NHANVIENModel tam: dsnv){
-                if((tam.getMaNV().equals(user.getMaNV()))&&tam.getMaChucVu().equals("CV001") )
-                    return 1;
-            }
-    
-    return 2;
-    }
 
+    public int kiemtraquyenLogin(NHANVIENModel user) throws SQLException {
+        NHANVIENModel nv = new NHANVIENModel();
+        ArrayList<NHANVIENModel> dsnv = new ArrayList<>();
+        dsnv = nv.layThongtinnhanvien();
+        for (NHANVIENModel tam : dsnv) {
+            if ((tam.getMaNV().equals(user.getMaNV())) && tam.getMaChucVu().equals("CV001")) {
+                return 1;
+            }
+        }
+
+        return 2;
+    }
+static boolean KiemTraQuanLy(String tenChucVu)
+    {
+        int kiemTra = tenChucVu.indexOf("Quản lý");
+        if (kiemTra == 0)
+            return true;
+        else return false;
+    }
 }

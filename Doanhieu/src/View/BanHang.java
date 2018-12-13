@@ -18,6 +18,7 @@ import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -52,7 +54,7 @@ public class BanHang extends JFrame {
     private DefaultTableModel defaultTableModelSanPham, defaultTableModel2;
     private JPanel panel1, panel2;
     private JTable jt, tbban;
-    private JTextField NameT1, textkh, textSl;
+    private JTextField NameT1, textkh, textSl,mahd;
     private boolean trangthaithem;
     private Connection connection;
     private BanHangControl controller;
@@ -66,7 +68,7 @@ public class BanHang extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Thu.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        java.awt.Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, true);
         this.setTitle("Đăng Nhập");
         this.setIconImage(new ImageIcon("D:\\java\\Thu\\1.png").getImage());
         this.setSize(1000, 660);
@@ -99,14 +101,14 @@ public class BanHang extends JFrame {
         cbbLoai.setSelectedIndex(0);
         timkiem = new JButton("Tìm");
         timkiem.setBounds(330, 10, 55, 25);
-        defaultTableModelSanPham = controller.themspvaobangsp(maloai);
+        defaultTableModelSanPham = controller.themspvaobangsp(NameT1.getText(),maloai);
         timkiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 
                     maloai = controller.Timkiem(e);
-                    defaultTableModelSanPham = controller.themspvaobangsp(maloai);
+                    defaultTableModelSanPham = controller.themspvaobangsp(NameT1.getText(),maloai);
                     jt.setModel(defaultTableModelSanPham);
                 } catch (IOException ex) {
                     Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,15 +137,16 @@ public class BanHang extends JFrame {
         panel2 = new JPanel();
         panel2.setLayout(null);
 
-        JLabel mahang = new JLabel("Mã hàng");
+        JLabel mahang = new JLabel("Khác hàng");
         mahang.setBounds(14, 14, 75, 25);
         textkh = new JTextField();
         textkh.setBounds(90, 14, 360, 25);
 
         JLabel sohd = new JLabel("Số HĐ");
         sohd.setBounds(320, 65, 33, 17);
-        JTextField hd = new JTextField();
-        hd.setBounds(376, 60, 69, 25);
+        mahd = new JTextField();
+        mahd.setBounds(376, 60, 69, 25);
+        mahd.setEditable(false);
 
         JLabel Nv = new JLabel("Nhân Viên");
         Nv.setBounds(14, 100, 76, 25);
@@ -165,7 +168,7 @@ public class BanHang extends JFrame {
 
         panel2.add(a);
         panel2.add(sohd);
-        panel2.add(hd);
+        panel2.add(mahd);
         panel2.add(Nv);
         panel2.add(nhanvien);
         //bang hang hoa
@@ -257,12 +260,27 @@ public class BanHang extends JFrame {
         taohoadon.setBounds(407, 450, 70, 60);
         taohoadon.setMargin(new Insets(5, 5, 5, 5));
         taohoadon.setText("<html><center>" + "Tạo Mới" + "<br>" + "Hóa Đơn" + "</center></html>");
+        taohoadon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.themHoadonmoi(e,tennhanvien);
+                } catch (IOException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    textSl.setText("1");
+            }
+        });
         this.add(taohoadon);
 
         JLabel Soluong = new JLabel("Số lượng");
         Soluong.setBounds(420, 220, 60, 20);
         textSl = new JTextField();
-        textSl.setText("");
+        textSl.setText("1");
 
         textSl.setBounds(407, 250, 70, 25);
         this.add(Soluong);
@@ -275,9 +293,8 @@ public class BanHang extends JFrame {
         them.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (textSl.getText() != "") {
                     controller.themspvaobangspchon(textSl.getText());
-                }
+                    textSl.setText("1");
             }
         });
         this.add(them);
@@ -435,5 +452,8 @@ public class BanHang extends JFrame {
 
     public JTextField getTextSl() {
         return textSl;
+    }
+        public JTextField getMahd() {
+        return mahd;
     }
 }

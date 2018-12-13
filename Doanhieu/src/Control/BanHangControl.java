@@ -5,6 +5,7 @@
  */
 package Control;
 
+import Model.HOADONModel;
 import Model.LOAISANPHAMModel;
 import Model.SANPHAMModel;
 import Model.NHANVIENModel;
@@ -40,7 +41,8 @@ public class BanHangControl {
     private ArrayList<SANPHAMModel> DSSP;
     private ArrayList<LOAISANPHAMModel> Dsloai;
     private ArrayList<NHANVIENModel> DSnhanvien;
-    private int vitrihangtableban;
+    private ArrayList<HOADONModel> DShoadon;
+    private int vitrihangtableban, vitrihangtablesp;
 
     public BanHangControl() {
     }
@@ -66,8 +68,28 @@ public class BanHangControl {
                 maloai = loai.getMALOAI();
             }
         }
-        themspvaobangsp(maloai);
+        themspvaobangsp("SP001", maloai);
         return maloai;
+    }
+
+    public void themHoadonmoi(ActionEvent e, String NhanVien) throws IOException, ClassNotFoundException, SQLException {
+        Component component = (Component) e.getSource();
+        BanHang fr = (BanHang) SwingUtilities.getRoot(component);
+        HOADONModel hd = new HOADONModel();
+        ArrayList<HOADONModel> danhsachtam = hd.layDanhsachhoadon();
+        int size = danhsachtam.size();
+        String MAHD = danhsachtam.get(size - 1).getMAHD();
+        String chuoisohdtam = MAHD.substring(2, 5);
+        int temp = Integer.parseInt(chuoisohdtam);
+        if (temp < 9) {
+            fr.getMahd().setText("HD00" + (temp + 1));
+        }
+        if (temp >= 9 && temp < 99) {
+            fr.getMahd().setText("HD0" + (temp + 1));
+        }
+        if (temp >= 99) {
+            fr.getMahd().setText("HD" + (temp + 1));
+        }
     }
 
     public String[] Layloaisanpham() throws SQLException {
@@ -108,6 +130,7 @@ public class BanHangControl {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
         int row = fr.getJt().rowAtPoint(e.getPoint());
+        vitrihangtablesp = row;
         int col = fr.getJt().columnAtPoint(e.getPoint());
         int numcols = defaultTableModelSanPham.getColumnCount();
         for (int i = 0; i < numcols; i++) {
@@ -177,7 +200,7 @@ public class BanHangControl {
         z.add(gia);
         z.add(donvi);
         z.add(fr.getTextSl().getText());
-        int tongdongia=Integer.parseInt(gia) * Integer.parseInt(fr.getTextSl().getText());
+        int tongdongia = Integer.parseInt(gia) * Integer.parseInt(fr.getTextSl().getText());
         z.add(String.valueOf(tongdongia));
         defaultTableModel2.insertRow(vitrihangtableban, z);
 
@@ -193,43 +216,52 @@ public class BanHangControl {
         defaultTableModelSanPham.addColumn("Số Lượng Tồn");
     }
 
-    public DefaultTableModel themspvaobangsp(String tenloai) throws SQLException {
+    public DefaultTableModel themspvaobangsp(String masp, String tenloai) throws SQLException {
         themthuoctinhbangsp();
         DSSP = new ArrayList<>();
         SANPHAMModel Sanpham = new SANPHAMModel();
         DSSP = Sanpham.layDanhSachSpDeban();
+
         defaultTableModelSanPham.setRowCount(0);
         for (SANPHAMModel sp : DSSP) {
             Vector v = new Vector();
-            if (tenloai.equals("TẤT CẢ") == true) {
-
-                v.add(sp.getMASP());
-                v.add(sp.getTENSP());
-                v.add(String.valueOf(sp.getDONGIABAN()));
-                v.add(sp.getDONVI());
-                v.add(sp.getMALOAI());
-                v.add(String.valueOf(sp.getSOLUONGTON()));
-                defaultTableModelSanPham.addRow(v);
-            } else {
-
-                v.add(sp.getMASP());
-                v.add(sp.getTENSP());
-                v.add(String.valueOf(sp.getDONGIABAN()));
-                v.add(sp.getDONVI());
-                v.add(sp.getMALOAI());
-                v.add(String.valueOf(sp.getSOLUONGTON()));
-
-                if (sp.getMALOAI().equals(tenloai)) {
+            if (masp.isEmpty()) {
+                if (tenloai.equals("TẤT CẢ") == true) {
+                    v.add(sp.getMASP());
+                    v.add(sp.getTENSP());
+                    v.add(String.valueOf(sp.getDONGIABAN()));
+                    v.add(sp.getDONVI());
+                    v.add(sp.getMALOAI());
+                    v.add(String.valueOf(sp.getSOLUONGTON()));
+                    defaultTableModelSanPham.addRow(v);
+                } else {
+                    if (sp.getMALOAI().equals(tenloai)) {
+                        v.add(sp.getMASP());
+                        v.add(sp.getTENSP());
+                        v.add(String.valueOf(sp.getDONGIABAN()));
+                        v.add(sp.getDONVI());
+                        v.add(sp.getMALOAI());
+                        v.add(String.valueOf(sp.getSOLUONGTON()));
+                        defaultTableModelSanPham.addRow(v);
+                    }
+                }
+            }
+        else {
+                if (sp.getMASP().equals(masp)) {
+                    v.add(sp.getMASP());
+                    v.add(sp.getTENSP());
+                    v.add(String.valueOf(sp.getDONGIABAN()));
+                    v.add(sp.getDONVI());
+                    v.add(sp.getMALOAI());
+                    v.add(String.valueOf(sp.getSOLUONGTON()));
                     defaultTableModelSanPham.addRow(v);
                 }
-
             }
-
-        }
-        return defaultTableModelSanPham;
     }
+    return defaultTableModelSanPham ;
+}
 
-    public DefaultTableModel themthuoctinhbangspduocchon() {
+public DefaultTableModel themthuoctinhbangspduocchon() {
         defaultTableModel2 = new DefaultTableModel();
         defaultTableModel2.addColumn("Mã Hàng");
         defaultTableModel2.addColumn("Tên Hàng");
@@ -241,16 +273,36 @@ public class BanHangControl {
     }
 
     public void themspvaobangspchon(String sl) {
+        if (sl.isEmpty() || sl == null) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập số lượng", "Lỗi nhập", 1);
+        } else {
+            if (kiemtraTrungsanphamkhithemchon() == true) {
+                Vector v = new Vector();
+                v.add(ma);
+                v.add(ten);
+                v.add(gia);
+                v.add(donvi);
+                v.add(sl);
+                int tam = Integer.parseInt(gia) * Integer.parseInt(sl);
+                v.add(String.valueOf(tam));
+                defaultTableModel2.addRow(v);
+            } else {
+                JOptionPane.showMessageDialog(null, "Sản phẩm đã được chọn", "Lỗi nhập", 1);
+            }
+        }
+    }
 
-        Vector v = new Vector();
-        v.add(ma);
-        v.add(ten);
-        v.add(gia);
-        v.add(donvi);
-        v.add(sl);
-        int tam = Integer.parseInt(gia) * Integer.parseInt(sl);
-        v.add(String.valueOf(tam));
-        defaultTableModel2.addRow(v);
+    public boolean kiemtraTrungsanphamkhithemchon() {
+        int numcols = defaultTableModel2.getColumnCount();
+        for (int j = 0; j < defaultTableModel2.getRowCount(); j++) {
+            for (int i = 0; i < numcols; i++) {
+                String str = (String) defaultTableModel2.getValueAt(j, i);
+                if (ma == str) {
+                    return false;
+                }
+            }
+        }
 
+        return true;
     }
 }

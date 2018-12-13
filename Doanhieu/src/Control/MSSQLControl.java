@@ -25,6 +25,7 @@ public class MSSQLControl {
         try {
 
             String dbURL = "jdbc:sqlserver://" + SERVER_NAME + ":1433;databaseName=" + DATABASE_NAME + ";integratedSecurity=true;";
+//            String dbURL = "jdbc:sqlserver://localhost::1433;databaseName=QLCuaHangTienLoi;user=sa;password=123";
 //            String dbURL = "jdbc:sqlserver://localhost;databaseName=DOANJava;user=sa;password=123";
             connection = DriverManager.getConnection(dbURL);
         } catch (SQLException ex) {

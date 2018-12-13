@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -38,6 +39,7 @@ public class ManHinhChinh {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Thu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        java.awt.Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, false);
         MyIcon icon1 = new MyIcon("src/images/ic_user_male_24.png");
         MyIcon icon2 = new MyIcon("src/images/ic_signout.png");
         MyIcon icon3 = new MyIcon("src/images/nhanvien.png");
