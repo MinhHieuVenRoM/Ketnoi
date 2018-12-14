@@ -1,6 +1,5 @@
 ﻿create database QLCuaHangTienLoi
 use QLCuaHangTienLoi
-use QLBC
 drop database QLCuaHangTienLoi
 
 create table HESOLUONG
@@ -170,7 +169,7 @@ INSERT INTO HESOLUONG(MaChucVu,TenChucVu,HeSo) VALUES ('CV005',N'Nhân viên c�
 
 ------------------------------------------------------------------------
 -- Tạo dữ liệu NHANVIEN
-INSERT INTO NHANVIEN(MaNV,TenNV,SDT,DiaChi,NgaySinh,MaChucVu,GioiTinh,NgayVaoLam,MatKhau) VALUES ('NV001',N'Nguyễn Minh Hiếu','023456780',N'Quận Thủ Đức, TP.HCM','12/05/1998','CV000',N'Nam','14/10/2018','1')
+INSERT INTO NHANVIEN(MaNV,TenNV,SDT,DiaChi,NgaySinh,MaChucVu,GioiTinh,NgayVaoLam,MatKhau) VALUES ('NV001',N'Nguyễn Minh Hiếu','023456780',N'Quận Thủ Đức, TP.HCM','12/05/1998','CV001',N'Nam','14/10/2018','1')
 INSERT INTO NHANVIEN(MaNV,TenNV,SDT,DiaChi,NgaySinh,MaChucVu,GioiTinh,NgayVaoLam,MatKhau) VALUES ('NV002',N'Nguyễn Đặng Mỹ Ngọc','01234679',N'Quận 2, TP.HCM','22/02/1998','CV001',N'Nữ','14/10/2018','1')
 INSERT INTO NHANVIEN(MaNV,TenNV,SDT,DiaChi,NgaySinh,MaChucVu,GioiTinh,NgayVaoLam,MatKhau) VALUES ('NV003',N'Võ Hồng Mỹ Duyên','07843688',N'Quận 1, TP.HCM','16/09/1998','CV002',N'Nữ','20/10/2018','1')
 INSERT INTO NHANVIEN(MaNV,TenNV,SDT,DiaChi,NgaySinh,MaChucVu,GioiTinh,NgayVaoLam,MatKhau) VALUES ('NV004',N'Nguyễn Văn Thinh','03472422',N'Quận 5, TP.HCM','25/02/1998','CV003',N'Nam','22/10/2018','1')

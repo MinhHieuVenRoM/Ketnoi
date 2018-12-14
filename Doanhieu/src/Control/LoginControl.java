@@ -5,6 +5,7 @@
  */
 package Control;
 
+import Model.CHUCVUModel;
 import Model.NHANVIENModel;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,9 +35,11 @@ public class LoginControl {
         Component component = (Component) e.getSource();
         Login fr = (Login) SwingUtilities.getRoot(component);
         try {
+            //kiem tra co manv vs dung mat khau khong
             if (requestLogin(userModel) == true) {
                 try {
                     fr.dispose();
+                    //truyền vào manhinhchinh với Mã Nhân viên và cấp bậc(quản lý 1, nhan vien 2) vào
                     ManHinhChinh manHinhChinh = new ManHinhChinh(userModel.getMaNV(), kiemtraquyenLogin(userModel));
                 } catch (IOException ex) {
                     Logger.getLogger(LoginControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,18 +90,30 @@ public class LoginControl {
         ArrayList<NHANVIENModel> dsnv = new ArrayList<>();
         dsnv = nv.layThongtinnhanvien();
         for (NHANVIENModel tam : dsnv) {
-            if ((tam.getMaNV().equals(user.getMaNV())) && tam.getMaChucVu().equals("CV001")) {
+            if ((tam.getMaNV().equals(user.getMaNV())) && KiemTraQuanLy(tam.getMaChucVu()) == true) {
                 return 1;
             }
         }
 
         return 2;
     }
-static boolean KiemTraQuanLy(String tenChucVu)
-    {
+
+    static boolean KiemTraQuanLy(String machucvu) throws SQLException {
+        CHUCVUModel cv = new CHUCVUModel();
+        ArrayList<CHUCVUModel> dscv = new ArrayList<>();
+        dscv = cv.layDanhsachchucvu();
+        String tenChucVu = "";
+        for (CHUCVUModel tam : dscv) {
+            if (tam.getMACHUCVU().equals(machucvu)) {
+                tenChucVu = tam.getTENCHUCVU();
+            }
+
+        }
         int kiemTra = tenChucVu.indexOf("Quản lý");
-        if (kiemTra == 0)
+        if (kiemTra == 0) {
             return true;
-        else return false;
+        } else {
+            return false;
+        }
     }
 }

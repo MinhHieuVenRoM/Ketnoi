@@ -33,7 +33,7 @@ public class ManHinhChinh {
 
     private JPanel panel1, panel2;
 
-    public ManHinhChinh(String tennhanvien, int capbac) throws IOException {
+    public ManHinhChinh(String MaNV, int capbac) throws IOException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -57,7 +57,7 @@ public class ManHinhChinh {
         //Panel  Hiện tên nhân viên và buton thoát
         panel1 = new JPanel();
         panel1.setLayout(new GridLayout(1, 2));
-        JLabel tennv = new JLabel(tennhanvien, icon1.icon, JLabel.RIGHT);
+        JLabel tennv = new JLabel(MaNV, icon1.icon, JLabel.RIGHT);
         panel1.add(tennv);
 
         JButton logout = new JButton("Logout");
@@ -124,7 +124,7 @@ public class ManHinhChinh {
             public void actionPerformed(ActionEvent e) {
                 try {
                     jf.dispose();
-                    new CHINH_DOANHTHU(tennhanvien);
+                    new CHINH_DOANHTHU(MaNV);
                 } catch (IOException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }

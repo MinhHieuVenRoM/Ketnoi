@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -36,7 +37,7 @@ import javax.swing.table.DefaultTableModel;
 public class BanHangControl {
 
     private static Connection connection;
-    private DefaultTableModel defaultTableModelSanPham, defaultTableModel2;
+    private DefaultTableModel defaultTableModelSanPham, defaultTableModelbanhang;
     private String ma = "", ten = "", donvi = "", gia = "", soluong = "", tong = "";
     private ArrayList<SANPHAMModel> DSSP;
     private ArrayList<LOAISANPHAMModel> Dsloai;
@@ -59,6 +60,36 @@ public class BanHangControl {
 
     }
 
+    public void thanhtoanHoaDon(ActionEvent e, String MAHD, JTable banhangJTable) throws IOException, ClassNotFoundException, SQLException {
+        Component component = (Component) e.getSource();
+        connection = MSSQLControl.getConnect();
+        Statement statement = connection.createStatement();
+        BanHang fr = (BanHang) SwingUtilities.getRoot(component);
+        int numcols = banhangJTable.getColumnCount();
+        int row = banhangJTable.getRowCount();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < numcols; j++) {
+                String tam = (String) banhangJTable.getValueAt(i, j);
+                if (j == 0) {
+                    ma = tam;
+                }
+                if (j == 1) {
+                    ten = tam;
+                }
+                if (j == 2) {
+                    gia = tam;
+                }
+                if (j == 4) {
+                    soluong = tam;
+                }
+
+            }
+            String sql = "insert into CHITIETHOADON values('" + MAHD + "','" + ma + "','" + soluong + "',null,null)";
+            statement.executeUpdate(sql);
+        }
+        connection.close();
+    }
+    
     public String Timkiem(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
@@ -72,7 +103,7 @@ public class BanHangControl {
         return maloai;
     }
 
-    public void themHoadonmoi(ActionEvent e, String NhanVien) throws IOException, ClassNotFoundException, SQLException {
+    public void themHoadonmoi(ActionEvent e, String manv, String thoigian) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
         HOADONModel hd = new HOADONModel();
@@ -90,6 +121,11 @@ public class BanHangControl {
         if (temp >= 99) {
             fr.getMahd().setText("HD" + (temp + 1));
         }
+        connection = MSSQLControl.getConnect();
+        Statement statement = connection.createStatement();
+        String sql = "insert into HOADON values('" + fr.getMahd().getText() + "','" + thoigian + "','" + manv + "',null)";
+        statement.executeUpdate(sql);
+        connection.close();
     }
 
     public String[] Layloaisanpham() throws SQLException {
@@ -147,7 +183,7 @@ public class BanHangControl {
             if (i == 3) {
                 donvi = str;
             }
-            fr.getNameT1().setText(ma);
+            fr.gettextmasp().setText(ma);
 
         }
     }
@@ -158,11 +194,11 @@ public class BanHangControl {
         int row = fr.getTbban().rowAtPoint(e.getPoint());
         vitrihangtableban = row;
         int col = fr.getTbban().columnAtPoint(e.getPoint());
-        int numcols = defaultTableModel2.getColumnCount();
-        String str = (String) defaultTableModel2.getValueAt(row, 4);
+        int numcols = defaultTableModelbanhang.getColumnCount();
+        String str = (String) defaultTableModelbanhang.getValueAt(row, 4);
         fr.getTextSl().setText(str);
         for (int i = 0; i < numcols; i++) {
-            String tam = (String) defaultTableModel2.getValueAt(row, i);
+            String tam = (String) defaultTableModelbanhang.getValueAt(row, i);
             if (i == 0) {
                 ma = tam;
             }
@@ -192,7 +228,7 @@ public class BanHangControl {
         int array[];
         array = fr.getTbban().getSelectedRows();
         for (int i = 0; i < array.length; i++) {
-            defaultTableModel2.removeRow(array[i]);
+            defaultTableModelbanhang.removeRow(array[i]);
         }
         Vector z = new Vector();
         z.add(ma);
@@ -202,18 +238,27 @@ public class BanHangControl {
         z.add(fr.getTextSl().getText());
         int tongdongia = Integer.parseInt(gia) * Integer.parseInt(fr.getTextSl().getText());
         z.add(String.valueOf(tongdongia));
-        defaultTableModel2.insertRow(vitrihangtableban, z);
+        defaultTableModelbanhang.insertRow(vitrihangtableban, z);
 
+    }
+       public void xoaSanphamdachon(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
+        Component component = (Component) e.getSource();
+        BanHang fr = (BanHang) SwingUtilities.getRoot(component);
+        int array[];
+        array = fr.getTbban().getSelectedRows();
+        for (int i = 0; i < array.length; i++) {
+            defaultTableModelbanhang.removeRow(array[i]);
+        }
     }
 
     public void themthuoctinhbangsp() {
         defaultTableModelSanPham = new DefaultTableModel();
-        defaultTableModelSanPham.addColumn("Mã Hàng");
-        defaultTableModelSanPham.addColumn("Tên Hàng");
+        defaultTableModelSanPham.addColumn("Mã SP");
+        defaultTableModelSanPham.addColumn("Tên Sản Phẩm");
         defaultTableModelSanPham.addColumn("Giá");
         defaultTableModelSanPham.addColumn("Đơn vị");
         defaultTableModelSanPham.addColumn("Loại");
-        defaultTableModelSanPham.addColumn("Số Lượng Tồn");
+//        defaultTableModelSanPham.addColumn("Số Lượng Tồn");
     }
 
     public DefaultTableModel themspvaobangsp(String masp, String tenloai) throws SQLException {
@@ -232,7 +277,7 @@ public class BanHangControl {
                     v.add(String.valueOf(sp.getDONGIABAN()));
                     v.add(sp.getDONVI());
                     v.add(sp.getMALOAI());
-                    v.add(String.valueOf(sp.getSOLUONGTON()));
+//                    v.add(String.valueOf(sp.getSOLUONGTON()));
                     defaultTableModelSanPham.addRow(v);
                 } else {
                     if (sp.getMALOAI().equals(tenloai)) {
@@ -241,35 +286,34 @@ public class BanHangControl {
                         v.add(String.valueOf(sp.getDONGIABAN()));
                         v.add(sp.getDONVI());
                         v.add(sp.getMALOAI());
-                        v.add(String.valueOf(sp.getSOLUONGTON()));
+//                        v.add(String.valueOf(sp.getSOLUONGTON()));
                         defaultTableModelSanPham.addRow(v);
                     }
                 }
-            }
-        else {
+            } else {
                 if (sp.getMASP().equals(masp)) {
                     v.add(sp.getMASP());
                     v.add(sp.getTENSP());
                     v.add(String.valueOf(sp.getDONGIABAN()));
                     v.add(sp.getDONVI());
                     v.add(sp.getMALOAI());
-                    v.add(String.valueOf(sp.getSOLUONGTON()));
+//                    v.add(String.valueOf(sp.getSOLUONGTON()));
                     defaultTableModelSanPham.addRow(v);
                 }
             }
+        }
+        return defaultTableModelSanPham;
     }
-    return defaultTableModelSanPham ;
-}
 
-public DefaultTableModel themthuoctinhbangspduocchon() {
-        defaultTableModel2 = new DefaultTableModel();
-        defaultTableModel2.addColumn("Mã Hàng");
-        defaultTableModel2.addColumn("Tên Hàng");
-        defaultTableModel2.addColumn("Giá");
-        defaultTableModel2.addColumn("Đơn vị");
-        defaultTableModel2.addColumn("Số lượng");
-        defaultTableModel2.addColumn("Tổng");
-        return defaultTableModel2;
+    public DefaultTableModel themthuoctinhbangspduocchon() {
+        defaultTableModelbanhang = new DefaultTableModel();
+        defaultTableModelbanhang.addColumn("Mã SP");
+        defaultTableModelbanhang.addColumn("Tên Sản Phẩm");
+        defaultTableModelbanhang.addColumn("Giá");
+        defaultTableModelbanhang.addColumn("Đơn vị");
+        defaultTableModelbanhang.addColumn("Số lượng");
+        defaultTableModelbanhang.addColumn("Tổng");
+        return defaultTableModelbanhang;
     }
 
     public void themspvaobangspchon(String sl) {
@@ -285,7 +329,7 @@ public DefaultTableModel themthuoctinhbangspduocchon() {
                 v.add(sl);
                 int tam = Integer.parseInt(gia) * Integer.parseInt(sl);
                 v.add(String.valueOf(tam));
-                defaultTableModel2.addRow(v);
+                defaultTableModelbanhang.addRow(v);
             } else {
                 JOptionPane.showMessageDialog(null, "Sản phẩm đã được chọn", "Lỗi nhập", 1);
             }
@@ -293,11 +337,11 @@ public DefaultTableModel themthuoctinhbangspduocchon() {
     }
 
     public boolean kiemtraTrungsanphamkhithemchon() {
-        int numcols = defaultTableModel2.getColumnCount();
-        for (int j = 0; j < defaultTableModel2.getRowCount(); j++) {
+        int numcols = defaultTableModelbanhang.getColumnCount();
+        for (int j = 0; j < defaultTableModelbanhang.getRowCount(); j++) {
             for (int i = 0; i < numcols; i++) {
-                String str = (String) defaultTableModel2.getValueAt(j, i);
-                if (ma == str) {
+                String str = (String) defaultTableModelbanhang.getValueAt(j, i);
+                if (ma.equals(str)) {
                     return false;
                 }
             }
@@ -305,4 +349,14 @@ public DefaultTableModel themthuoctinhbangspduocchon() {
 
         return true;
     }
+
+    public String tinhtongTienthanhtoan() {
+        int tongtien = 0;
+        for (int j = 0; j < defaultTableModelbanhang.getRowCount(); j++) {
+            String str = (String) defaultTableModelbanhang.getValueAt(j, 5);
+            tongtien = tongtien + Integer.parseInt(str);
+        }
+        return String.valueOf(tongtien);
+    }
+
 }
