@@ -16,7 +16,7 @@ create table NHANVIEN
 	NgaySinh smalldatetime,
 	GioiTinh nvarchar(3),
 	DiaChi nvarchar(200),
-	MaChucVu char(5) foreign key references HESOLUONG(MaChucVu),
+	MaChucVu char(5) foreign key references CHUCVU(MaChucVu),
 	NgayVaoLam smalldatetime,
 	SDT varchar(10),
 	MatKhau varchar(30)
