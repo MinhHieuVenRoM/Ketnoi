@@ -91,7 +91,7 @@ public class ManHinhChinh {
                 jf.dispose();
                 try {
                     new BanHang(tennv.getText(),capbac);
-                } catch (SQLException ex) {
+                } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -108,7 +108,7 @@ public class ManHinhChinh {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
-                new Quanlytinthongcanhan();
+                new Quanlytinthongcanhan(MaNV,capbac);
             }
         });
 
@@ -159,7 +159,7 @@ public class ManHinhChinh {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
-                new Quanlynhanvien();
+                new Quanlynhanvien(MaNV,capbac);
             }
         });
         if (capbac == 1) {

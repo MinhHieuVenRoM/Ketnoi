@@ -57,7 +57,7 @@ public class BanHang extends JFrame {
     private JComboBox nhanvien, cbbLoai;
     private String maloai = "TẤT CẢ";
 
-    public BanHang(String MaNV, int capbac) throws SQLException {
+    public BanHang(String MaNV, int capbac) throws SQLException, ClassNotFoundException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

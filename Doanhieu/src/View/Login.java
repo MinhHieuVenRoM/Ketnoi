@@ -40,7 +40,7 @@ public class Login extends JFrame {
     protected JPasswordField password;
     private LoginControl controller;
 
-    public Login() throws IOException{
+    public Login() throws IOException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -53,13 +53,13 @@ public class Login extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(null);
+        java.awt.Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, true);
 //      jf.getContentPane().setBackground(Color.decode("#FAFAFA"));
 //      panel1 = new ImagePanel(new ImageIcon("C:\\Users\\User\\Desktop\\1.png").getImage());
         controller = new LoginControl();
         panel2 = new JPanel();
         panel2.setLayout(new GridLayout(3, 2));
         JLabel name = new JLabel("User name:");
-        java.awt.Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, true);
         panel2.add(name);
         name.setFont(new Font("TimesRoman", Font.BOLD, 15));
         userid = new JTextField();
@@ -79,7 +79,7 @@ public class Login extends JFrame {
         checkpass.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 try {
                     controller.AnHienPass(e);
                 } catch (IOException ex) {
@@ -103,7 +103,7 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     NHANVIENModel userModel = new NHANVIENModel(getuser(), getpass());
-                    controller.ketnoi(e,userModel);
+                    controller.ketnoi(e, userModel);
                 } catch (IOException | ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -150,7 +150,8 @@ public class Login extends JFrame {
 
         return this.password.getText();
     }
-        public JTextField getUserid() {
+
+    public JTextField getUserid() {
         return userid;
     }
 

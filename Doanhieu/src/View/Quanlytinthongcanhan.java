@@ -35,7 +35,7 @@ public class Quanlytinthongcanhan {
     JFrame jf;
     JTabbedPane tabbedPane;
 
-    public Quanlytinthongcanhan() {
+    public Quanlytinthongcanhan(String MANV,int Capbac) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -281,7 +281,7 @@ public class Quanlytinthongcanhan {
             public void actionPerformed(ActionEvent e) {
                 try {
                     jf.dispose();
-                    new ManHinhChinh("",1);
+                    new ManHinhChinh(MANV,Capbac);
                 } catch (IOException ex) {
                     Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
                 }

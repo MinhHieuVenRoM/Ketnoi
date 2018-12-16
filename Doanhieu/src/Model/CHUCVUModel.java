@@ -48,7 +48,7 @@ public class CHUCVUModel {
         this.TENCHUCVU = TENCHUCVU;
     }
 
-    public ArrayList layDanhsachchucvu() throws SQLException {
+    public ArrayList layDanhsachchucvu() throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
         String sql = "select * from CHUCVU";

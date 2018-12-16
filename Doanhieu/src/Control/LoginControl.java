@@ -30,6 +30,8 @@ import javax.swing.SwingUtilities;
 public class LoginControl {
 
     private static Connection connection;
+    private  ArrayList<NHANVIENModel> dsnv;
+    private  ArrayList<CHUCVUModel> dscv;
 
     public void ketnoi(ActionEvent e, NHANVIENModel userModel) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
@@ -67,11 +69,11 @@ public class LoginControl {
 
     }
 
-    public static boolean requestLogin(NHANVIENModel user) throws SQLException {
+    public boolean requestLogin(NHANVIENModel user) throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         try {
             NHANVIENModel nv = new NHANVIENModel();
-            ArrayList<NHANVIENModel> dsnv = new ArrayList<>();
+            dsnv = new ArrayList<>();
             dsnv = nv.layThongtinnhanvien();
             for (NHANVIENModel tam : dsnv) {
                 if ((tam.getMaNV().equals(user.getMaNV())) && tam.getMatKhau().equals(user.getMatKhau())) {
@@ -85,9 +87,9 @@ public class LoginControl {
         return false;
     }
 
-    public int kiemtraquyenLogin(NHANVIENModel user) throws SQLException {
+    public int kiemtraquyenLogin(NHANVIENModel user) throws SQLException, ClassNotFoundException {
         NHANVIENModel nv = new NHANVIENModel();
-        ArrayList<NHANVIENModel> dsnv = new ArrayList<>();
+        dsnv = new ArrayList<>();
         dsnv = nv.layThongtinnhanvien();
         for (NHANVIENModel tam : dsnv) {
             if ((tam.getMaNV().equals(user.getMaNV())) && KiemTraQuanLy(tam.getMaChucVu()) == true) {
@@ -98,9 +100,9 @@ public class LoginControl {
         return 2;
     }
 
-    static boolean KiemTraQuanLy(String machucvu) throws SQLException {
+    public boolean KiemTraQuanLy(String machucvu) throws SQLException, ClassNotFoundException {
         CHUCVUModel cv = new CHUCVUModel();
-        ArrayList<CHUCVUModel> dscv = new ArrayList<>();
+        dscv = new ArrayList<>();
         dscv = cv.layDanhsachchucvu();
         String tenChucVu = "";
         for (CHUCVUModel tam : dscv) {

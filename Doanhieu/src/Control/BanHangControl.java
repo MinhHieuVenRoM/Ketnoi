@@ -128,7 +128,7 @@ public class BanHangControl {
         connection.close();
     }
 
-    public String[] Layloaisanpham() throws SQLException {
+    public String[] Layloaisanpham() throws SQLException, ClassNotFoundException {
         LOAISANPHAMModel loai = new LOAISANPHAMModel();
         loai.layDanhsachloaisanpham();
         String[] ds = new String[loai.demSoloaisanpham() + 1];
@@ -145,7 +145,7 @@ public class BanHangControl {
 
     }
 
-    public String[] layDsnhanvien() throws SQLException {
+    public String[] layDsnhanvien() throws SQLException, ClassNotFoundException {
         DSnhanvien = new ArrayList<>();
         NHANVIENModel nv = new NHANVIENModel();
         DSnhanvien = nv.layThongtinnhanvien();
@@ -262,7 +262,7 @@ public class BanHangControl {
 //        defaultTableModelSanPham.addColumn("Số Lượng Tồn");
     }
 
-    public DefaultTableModel themspvaobangsp(String masp, String tenloai) throws SQLException {
+    public DefaultTableModel themspvaobangsp(String masp, String tenloai) throws SQLException, ClassNotFoundException {
         themthuoctinhbangsp();
         DSSP = new ArrayList<>();
         SANPHAMModel Sanpham = new SANPHAMModel();

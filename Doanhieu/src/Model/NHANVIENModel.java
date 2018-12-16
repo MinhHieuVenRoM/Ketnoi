@@ -111,7 +111,7 @@ public class NHANVIENModel {
     public NHANVIENModel() {
     }
 
-    public ArrayList layThongtinnhanvien() throws SQLException {
+    public ArrayList layThongtinnhanvien() throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
         String sql = "select * from NHANVIEN";
