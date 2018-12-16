@@ -20,14 +20,14 @@ public class MSSQLControl {
     public static final String DATABASE_NAME = "QLCuaHangTienLoi";
     public static final String SERVER_NAME = "DESKTOP-EBT5L5N";
 
-    public static Connection getConnect() throws SQLException {
+    public static Connection getConnect() throws SQLException, ClassNotFoundException {
         Connection connection = null;
         try {
-
-            String dbURL = "jdbc:sqlserver://" + SERVER_NAME + ":1433;databaseName=" + DATABASE_NAME + ";integratedSecurity=true;";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); 
+//            String dbURL = "jdbc:sqlserver://" + SERVER_NAME + ":1433;databaseName=" + DATABASE_NAME + ";integratedSecurity=true;";
 //            String dbURL = "jdbc:sqlserver://localhost::1433;databaseName=QLCuaHangTienLoi;user=sa;password=123";
-//            String dbURL = "jdbc:sqlserver://localhost;databaseName=DOANJava;user=sa;password=123";
-            connection = DriverManager.getConnection(dbURL);
+            String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=QLCuaHangTienLoi";
+            connection = DriverManager.getConnection(dbURL,"DOAN","");
         } catch (SQLException ex) {
             System.out.println("SQL Exception:" + ex.toString());
             Logger.getLogger(MSSQLControl.class.getName()).log(Level.SEVERE, null, ex);

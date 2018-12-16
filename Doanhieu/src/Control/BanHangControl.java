@@ -89,7 +89,7 @@ public class BanHangControl {
         }
         connection.close();
     }
-    
+
     public String Timkiem(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
@@ -241,7 +241,8 @@ public class BanHangControl {
         defaultTableModelbanhang.insertRow(vitrihangtableban, z);
 
     }
-       public void xoaSanphamdachon(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
+
+    public void xoaSanphamdachon(ActionEvent e) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
         int array[];
@@ -346,7 +347,6 @@ public class BanHangControl {
                 }
             }
         }
-
         return true;
     }
 
@@ -355,6 +355,9 @@ public class BanHangControl {
         for (int j = 0; j < defaultTableModelbanhang.getRowCount(); j++) {
             String str = (String) defaultTableModelbanhang.getValueAt(j, 5);
             tongtien = tongtien + Integer.parseInt(str);
+        }
+        if (String.valueOf(tongtien).equals("0")) {
+            return null;
         }
         return String.valueOf(tongtien);
     }

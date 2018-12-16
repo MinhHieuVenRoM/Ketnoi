@@ -399,8 +399,7 @@ public class BanHang extends JFrame {
 
         jScrollPane.setBounds(
                 15, 110, 390, 470);
-        tbsanpham.addMouseListener(
-                new MouseListener() {
+        tbsanpham.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e
             ) {
