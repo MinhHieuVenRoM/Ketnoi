@@ -50,7 +50,7 @@ public class LOAISANPHAMModel {
     public void layDanhsachloaisanpham() throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
-        String sql = "select * from LOAISANPHAM";
+        String sql = MSSQLControl.SELECT_LOAISANPHAM;
         ResultSet resultSet = statement.executeQuery(sql);
         Dsloai = new ArrayList<>();
 

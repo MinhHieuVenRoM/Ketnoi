@@ -103,15 +103,18 @@ public class BanHangControl {
         return maloai;
     }
 
-    public void themHoadonmoi(ActionEvent e, String manv, String thoigian) throws IOException, ClassNotFoundException, SQLException {
+    public void themHoadonmoi(ActionEvent e, String thoigian) throws IOException, ClassNotFoundException, SQLException {
         Component component = (Component) e.getSource();
         BanHang fr = (BanHang) SwingUtilities.getRoot(component);
+        
         HOADONModel hd = new HOADONModel();
         ArrayList<HOADONModel> danhsachtam = hd.layDanhsachhoadon();
+
         int size = danhsachtam.size();
         String MAHD = danhsachtam.get(size - 1).getMAHD();
-        String chuoisohdtam = MAHD.substring(2, 5);
-        int temp = Integer.parseInt(chuoisohdtam);
+        String chuoisohdtam = MAHD.substring(2, 5);//cắt chuỗi từ vị trí 2->(5-1)
+        int temp = Integer.parseInt(chuoisohdtam);//lấy sohd cuối cùng
+
         if (temp < 9) {
             fr.getMahd().setText("HD00" + (temp + 1));
         }
@@ -121,6 +124,15 @@ public class BanHangControl {
         if (temp >= 99) {
             fr.getMahd().setText("HD" + (temp + 1));
         }
+        NHANVIENModel nv = new NHANVIENModel();
+        DSnhanvien = nv.layThongtinnhanvien();
+        String manv = null;
+        for (NHANVIENModel tam : DSnhanvien) {
+            if (tam.getTenNV().equals(fr.getNhanvien().getSelectedItem().toString())) {
+                manv=tam.getMaNV();
+            }
+        }
+
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
         String sql = "insert into HOADON values('" + fr.getMahd().getText() + "','" + thoigian + "','" + manv + "',null)";
@@ -278,6 +290,7 @@ public class BanHangControl {
                     v.add(String.valueOf(sp.getDONGIABAN()));
                     v.add(sp.getDONVI());
                     v.add(sp.getMALOAI());
+                    
 //                    v.add(String.valueOf(sp.getSOLUONGTON()));
                     defaultTableModelSanPham.addRow(v);
                 } else {

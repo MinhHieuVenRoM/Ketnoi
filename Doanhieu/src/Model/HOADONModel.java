@@ -68,7 +68,7 @@ public class HOADONModel {
     public ArrayList layDanhsachhoadon() throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
-        String sql = "select * from HOADON";
+        String sql = MSSQLControl.SELECT_HOADON;
         ResultSet resultSet = statement.executeQuery(sql);
         DSHD = new ArrayList<>();
 

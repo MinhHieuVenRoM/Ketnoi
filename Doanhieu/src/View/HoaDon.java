@@ -41,7 +41,7 @@ public class HoaDon {
             Logger.getLogger(HoaDon.class.getName()).log(Level.SEVERE, null, ex);
         }
         //JFRAME
-        JFrame jf = new JFrame("Quản lý Doanh Thu");
+        JFrame jf = new JFrame("Quản lý Hóa đơn");
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setSize(1000, 650);
         jf.setLayout(null);

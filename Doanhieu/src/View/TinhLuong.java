@@ -65,8 +65,8 @@ public class TinhLuong {
         //BANG QUAN LY TÍNH LƯƠNG
         JLabel jlQLTL = new JLabel("BẢNG QUẢN LÝ TÍNH LƯƠNG");
         jlQLTL.setFont(new Font("TimesRoman", Font.BOLD, 29));
-        jlQLTL.setLocation(328, 26);
-        jlQLTL.setSize(403, 64);
+        jlQLTL.setLocation(300, 26);
+        jlQLTL.setSize(480, 64);
         jf.add(jlQLTL);
 
         JPanel QLTL = new JPanel();

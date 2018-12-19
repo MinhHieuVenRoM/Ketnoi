@@ -296,7 +296,7 @@ public class BanHang extends JFrame {
                 try {
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     String thoigian = df.format(ngayChooser.getDate()) + " " + gio.getText();//xử lý thời gian đưa vào YYYY-MM-DD HH::mm::ss
-                    controller.themHoadonmoi(e, MaNV, thoigian);
+                    controller.themHoadonmoi(e, thoigian);
                 } catch (IOException ex) {
                     Logger.getLogger(BanHang.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
