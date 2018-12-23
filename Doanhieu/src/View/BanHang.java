@@ -397,7 +397,8 @@ public class BanHang extends JFrame {
         tbsanpham.getModel().addTableModelListener(tbsanpham);
         JScrollPane jScrollPane = new JScrollPane(tbsanpham);
 
-        jScrollPane.setBounds(15, 110, 390, 470);
+        jScrollPane.setBounds(
+                15, 110, 390, 470);
         tbsanpham.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e
@@ -508,17 +509,5 @@ public class BanHang extends JFrame {
 
     public JTextField getMahd() {
         return textmahd;
-    }
-
-    public JTextField getTextmasp() {
-        return textmasp;
-    }
-
-    public JTextField getTextmahd() {
-        return textmahd;
-    }
-
-    public JTextField getTexttongtien() {
-        return texttongtien;
     }
 }
