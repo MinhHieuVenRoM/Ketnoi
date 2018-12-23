@@ -94,10 +94,10 @@ public class SANPHAMModel {
         this.DSSP = DSSP;
     }
 
-    public ArrayList layDanhSachSpDeban() throws SQLException {
+    public ArrayList layDanhSachSpDeban() throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
-        String sql = "select * from SanPham";
+        String sql = MSSQLControl.SELECT_SANPHAM;
         ResultSet resultSet = statement.executeQuery(sql);
         DSSP = new ArrayList<>();
 

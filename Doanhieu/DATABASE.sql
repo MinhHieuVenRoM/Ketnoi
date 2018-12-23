@@ -2,7 +2,7 @@
 use QLCuaHangTienLoi
 drop database QLCuaHangTienLoi
 
-create table HESOLUONG
+create table CHUCVU
 (
 	MaChucVu char(5) primary key,
 	TenChucVu nvarchar(50),
@@ -16,7 +16,7 @@ create table NHANVIEN
 	NgaySinh smalldatetime,
 	GioiTinh nvarchar(3),
 	DiaChi nvarchar(200),
-	MaChucVu char(5) foreign key references CHUCVU(MaChucVu),
+	MaChucVu char(5) foreign key references HESOLUONG(MaChucVu),
 	NgayVaoLam smalldatetime,
 	SDT varchar(10),
 	MatKhau varchar(30)
@@ -160,12 +160,12 @@ insert into SANPHAM values ('SP049',N'Vở','8000','12000',N'quyển','ML005',1,
 insert into SANPHAM values ('SP050',N'Sổ tay','10000','15000',N'quyển','ML005',1,20)
 
 ------------------------------------------------------------------------
--- Tạo dữ liệu HESOLUONG
-INSERT INTO HESOLUONG(MaChucVu,TenChucVu,HeSo) VALUES ('CV001',N'Quản lý cấp 1','5')
-INSERT INTO HESOLUONG(MaChucVu,TenChucVu,HeSo) VALUES ('CV002',N'Quản lý cấp 2','5')
-INSERT INTO HESOLUONG(MaChucVu,TenChucVu,HeSo) VALUES ('CV003',N'Nhân viên cấp 1','4')
-INSERT INTO HESOLUONG(MaChucVu,TenChucVu,HeSo) VALUES ('CV004',N'Nhân viên cấp 2','3')
-INSERT INTO HESOLUONG(MaChucVu,TenChucVu,HeSo) VALUES ('CV005',N'Nhân viên cấp 3','2')
+-- Tạo dữ liệu CHUCVU
+INSERT INTO CHUCVU(MaChucVu,TenChucVu,HeSo) VALUES ('CV001',N'Quản lý cấp 1','5')
+INSERT INTO CHUCVU(MaChucVu,TenChucVu,HeSo) VALUES ('CV002',N'Quản lý cấp 2','5')
+INSERT INTO CHUCVU(MaChucVu,TenChucVu,HeSo) VALUES ('CV003',N'Nhân viên cấp 1','4')
+INSERT INTO CHUCVU(MaChucVu,TenChucVu,HeSo) VALUES ('CV004',N'Nhân viên cấp 2','3')
+INSERT INTO CHUCVU(MaChucVu,TenChucVu,HeSo) VALUES ('CV005',N'Nhân viên cấp 3','2')
 
 ------------------------------------------------------------------------
 -- Tạo dữ liệu NHANVIEN

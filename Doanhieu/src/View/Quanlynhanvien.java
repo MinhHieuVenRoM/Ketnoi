@@ -67,7 +67,7 @@ public class Quanlynhanvien extends JFrame {
     JTable table;
     JLabel headerlb;
 
-    public Quanlynhanvien() {
+    public Quanlynhanvien(String MANV,int Capbac) {
         f = new JFrame();
         f.setTitle("Quản lý Cửa hàng tiện lợi");
         f.setResizable(false);
@@ -237,7 +237,7 @@ public class Quanlynhanvien extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     f.dispose();
-                    new ManHinhChinh("",1);
+                    new ManHinhChinh(MANV,Capbac);
                 } catch (IOException ex) {
                     Logger.getLogger(Quanlytinthongcanhan.class.getName()).log(Level.SEVERE, null, ex);
                 }

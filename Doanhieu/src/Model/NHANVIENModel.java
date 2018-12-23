@@ -19,6 +19,7 @@ import java.util.Date;
  */
 public class NHANVIENModel {
 
+    
     private static Connection connection;
     private String MaNV;
     private String TenNV;
@@ -111,7 +112,7 @@ public class NHANVIENModel {
     public NHANVIENModel() {
     }
 
-    public ArrayList layThongtinnhanvien() throws SQLException {
+    public ArrayList layThongtinnhanvien() throws SQLException, ClassNotFoundException {
         connection = MSSQLControl.getConnect();
         Statement statement = connection.createStatement();
         String sql = "select * from NHANVIEN";

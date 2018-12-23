@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -32,12 +33,13 @@ public class ManHinhChinh {
 
     private JPanel panel1, panel2;
 
-    public ManHinhChinh(String tennhanvien, int capbac) throws IOException {
+    public ManHinhChinh(String MaNV, int capbac) throws IOException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Thu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        java.awt.Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, false);
         MyIcon icon1 = new MyIcon("src/images/ic_user_male_24.png");
         MyIcon icon2 = new MyIcon("src/images/ic_signout.png");
         MyIcon icon3 = new MyIcon("src/images/nhanvien.png");
@@ -55,7 +57,7 @@ public class ManHinhChinh {
         //Panel  Hiện tên nhân viên và buton thoát
         panel1 = new JPanel();
         panel1.setLayout(new GridLayout(1, 2));
-        JLabel tennv = new JLabel(tennhanvien, icon1.icon, JLabel.RIGHT);
+        JLabel tennv = new JLabel(MaNV, icon1.icon, JLabel.RIGHT);
         panel1.add(tennv);
 
         JButton logout = new JButton("Logout");
@@ -89,7 +91,7 @@ public class ManHinhChinh {
                 jf.dispose();
                 try {
                     new BanHang(tennv.getText(),capbac);
-                } catch (SQLException ex) {
+                } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -106,7 +108,7 @@ public class ManHinhChinh {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
-                new Quanlytinthongcanhan();
+                new Quanlytinthongcanhan(MaNV,capbac);
             }
         });
 
@@ -122,7 +124,7 @@ public class ManHinhChinh {
             public void actionPerformed(ActionEvent e) {
                 try {
                     jf.dispose();
-                    new CHINH_DOANHTHU(tennhanvien);
+                    new CHINH_DOANHTHU(MaNV);
                 } catch (IOException ex) {
                     Logger.getLogger(ManHinhChinh.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -157,7 +159,7 @@ public class ManHinhChinh {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jf.dispose();
-                new Quanlynhanvien();
+                new Quanlynhanvien(MaNV,capbac);
             }
         });
         if (capbac == 1) {
